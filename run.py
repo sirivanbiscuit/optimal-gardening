@@ -1,4 +1,3 @@
-
 from bauhaus import Encoding, proposition, constraint
 from bauhaus.utils import count_solutions, likelihood
 
