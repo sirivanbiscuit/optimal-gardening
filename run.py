@@ -18,6 +18,7 @@ class BasicPropositions:
     def __repr__(self):
         return f"A.{self.data}"
 
+# balls
 
 # Different classes for propositions are useful because this allows for more dynamic constraint creation
 # for propositions within that class. For example, you can enforce that "at least one" of the propositions
