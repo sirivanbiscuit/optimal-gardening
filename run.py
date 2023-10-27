@@ -19,6 +19,17 @@ class BasicPropositions:
         return f"A.{self.data}"
 
 # balls
+# HELLO
+# Hi
+class Plant:
+    
+    def __init__(self, x, y, alive):
+        self.x = x
+        self.y = y
+        self.alive = alive
+
+    def __repr__(self):
+        return f"{self.x}, {self.y}"
 
 # Different classes for propositions are useful because this allows for more dynamic constraint creation
 # for propositions within that class. For example, you can enforce that "at least one" of the propositions
