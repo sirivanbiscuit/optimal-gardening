@@ -1,4 +1,3 @@
-from typing import Self
 from bauhaus import Encoding, proposition, constraint
 from bauhaus.utils import count_solutions, likelihood
 
@@ -89,6 +88,22 @@ class tile:
 
     def get_plant(self):
         return self.plant_type
+    
+    def get_adjacent(self):
+        adjacents = []
+
+        # probably not alowed based on what he said today, not sure though
+        row_adjacent = grid(x,y+1)
+        column_adjacent = grid(x+1,y)
+        adjacents.append(row_adjacent)
+        adjacents.append(column_adjacent)
+
+
+        
+
+        
+
+
 
 
 def grid_creation(rowlength, columnlength):
@@ -113,6 +128,10 @@ Bean = Plant("Bean")
 Tomato = Plant("Tomato")
 Corn = Plant("Corn")
 Peppers = Plant("Peppers")
+Empty = Plant("Empty")
+
+Alive = BasicPropositions("Alive")
+Harmed = BasicPropositions("Harmed")
 
 # example propositions
 a = BasicPropositions("a")
@@ -134,9 +153,9 @@ z = FancyPropositions("z")
 #  what the expectations are.
 def example_theory():
     # Add custom constraints by creating formulas with the variables you created. 
-    E.add_constraint((a | b) & ~x)
+    E.add_constraint((Pine & Bean) >> Harmed)
     # Implication
-    E.add_constraint(y >> z)
+    E.add_constraint(Empty >> ~Alive)
     # Negate a formula
     E.add_constraint(~(x & y))
     # You can also add more customized "fancy" constraints. Use case: you don't want to enforce "exactly one"
@@ -164,7 +183,7 @@ if __name__ == "__main__":
         print(" %s: %.2f" % (vn, likelihood(T, v)))
     print()
 
-    print(grid_creation(4,4))
+    grid = grid_creation(4,4)
 
 
 
