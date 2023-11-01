@@ -24,7 +24,8 @@ class BasicPropositions:
 # Hi
 # Commit testing
 class Plant:
-    
+
+    # Might alter to not def the x,y here, get it defined when added to the tile function or smth
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -34,25 +35,12 @@ class Plant:
         return self.type
     
 
-class Pine_Tree(Plant):
-    def __init__ (self, x, y):
-        self.TYPE = "pinetree"
 
-class Corn(Plant):
-    def __init__ (self, x, y):
-        self.TYPE = "corn"
+class helped():
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
 
-class Beans(Plant):
-    def __init__ (self, x, y):
-        self.TYPE = "beans"
-
-class Tomato(Plant):
-    def __init__ (self, x, y):
-        self.TYPE = "tomato"
-
-class Peppers(Plant):
-    def __init__ (self, x, y):
-        self.TYPE = "peppers"
 
 
 # Different classes for propositions are useful because this allows for more dynamic constraint creation
@@ -70,12 +58,68 @@ class FancyPropositions:
     def __repr__(self):
         return f"A.{self.data}"
 
+# class is just for grouping all data onto one slot that can be accessed with the just the xy value
+# could just as easily give the same stuff with a list or something, I just thought of this first
+class tile:
+    def __init__ (self, x, y):
+        self.x = x
+        self.y = y
+    
+    def __repr__(self):
+        return f"{self.x}, {self.y}"
+
+        # Others that need to go in here
+    def setplant (self, plant):
+        self.plant_type = Plant.type(plant)
+    
+    #def set
+    def isHelped (self, boolean_help):
+        self.is_helped = boolean_help
+
+    def isHarmed (self, boolean_harmed):
+        self.is_harmed = boolean_harmed
+
+    def isAlive (self, is_alive):
+        self.is_alive = is_alive
+
+
+        #self.iswatered = watered
+        #self.isfenced = fenced
+
+    def get_plant(self):
+        return self.plant_type
+
+
+def grid_creation(rowlength, columnlength):
+
+    grid = []
+    for i in range (columnlength):
+        grid.append(row)
+        for j in range (rowlength):
+            row = []
+            row.append(tile(i,j))
+
+    return grid
+
+
+
+
+
+
 # Call your variables whatever you want
+Pine = Plant("Pine")
+Bean = Plant("Bean")   
+Tomato = Plant("Tomato")
+Corn = Plant("Corn")
+Peppers = Plant("Peppers")
+
+# example propositions
 a = BasicPropositions("a")
 b = BasicPropositions("b")   
 c = BasicPropositions("c")
 d = BasicPropositions("d")
 e = BasicPropositions("e")
+
 # At least one of these will be true
 x = FancyPropositions("x")
 y = FancyPropositions("y")
@@ -118,3 +162,10 @@ if __name__ == "__main__":
         # Literals are compiled to NNF here
         print(" %s: %.2f" % (vn, likelihood(T, v)))
     print()
+
+    print(grid_creation(4,4))
+
+
+
+
+
