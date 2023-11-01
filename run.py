@@ -26,9 +26,10 @@ class BasicPropositions:
 class Plant:
 
     # Might alter to not def the x,y here, get it defined when added to the tile function or smth
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+    def __init__(self):
+        # self.x = x
+        # self.y = y
+        self.type = self
     def __repr__(self):
         return f"{self.x}, {self.y}"
     def type(self):
