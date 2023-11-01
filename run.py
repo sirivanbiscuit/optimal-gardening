@@ -1,3 +1,4 @@
+from typing import Self
 from bauhaus import Encoding, proposition, constraint
 from bauhaus.utils import count_solutions, likelihood
 
@@ -24,13 +25,35 @@ class BasicPropositions:
 # Commit testing
 class Plant:
     
-    def __init__(self, x, y, alive):
+    def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.alive = alive
-
     def __repr__(self):
         return f"{self.x}, {self.y}"
+    def type(self):
+        return self.type
+    
+
+class Pine_Tree(Plant):
+    def __init__ (self, x, y):
+        self.TYPE = "pinetree"
+
+class Corn(Plant):
+    def __init__ (self, x, y):
+        self.TYPE = "corn"
+
+class Beans(Plant):
+    def __init__ (self, x, y):
+        self.TYPE = "beans"
+
+class Tomato(Plant):
+    def __init__ (self, x, y):
+        self.TYPE = "tomato"
+
+class Peppers(Plant):
+    def __init__ (self, x, y):
+        self.TYPE = "peppers"
+
 
 # Different classes for propositions are useful because this allows for more dynamic constraint creation
 # for propositions within that class. For example, you can enforce that "at least one" of the propositions
