@@ -1,3 +1,11 @@
+"""
+A copy of the project template run.py file.
+For use as a reference/example ONLY.
+
+IGNORE this file if you are not in our project group.
+Do not reference any object in this file, as they will be deleted later.
+To be removed in the final submission.
+"""
 
 from bauhaus import Encoding, proposition, constraint
 from bauhaus.utils import count_solutions, likelihood

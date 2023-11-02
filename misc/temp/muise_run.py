@@ -1,3 +1,11 @@
+"""
+A copy of Prof Muise's run.py example.
+For use as a reference/example ONLY. Credit to Prof Muise.
+
+IGNORE this file if you are not in our project group.
+Do not reference any object in this file, as they will be deleted later.
+To be removed in the final submission.
+"""
 
 import sys
 
