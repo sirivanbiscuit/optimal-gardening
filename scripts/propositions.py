@@ -19,27 +19,67 @@ class PropBase:
         return str(self)
 
 
-# Plant
+# Pine tree 
+# (separate from other plants, for now)
 @proposition(ENC)
-class Plant(PropBase):
-
-    # Might alter to not def the x,y here, get it defined when added to the tile function or smth
-    def __init__(self):
-        # self.x = x
-        # self.y = y
-        self.type = self
-    def __repr__(self):
-        return f"{self.x}, {self.y}"
-    def type(self):
-        return self.type
-    
-
-# Helped
-@proposition(ENC)
-class helped(PropBase):
-    def __init__(self, x, y):
+class PineTree(PropBase):
+    def __init__(self, x, y) -> None:
         self.x = x
         self.y = y
+    
+    def __str__(self) -> str:
+        return f"Pine at {(self.x, self.y)}"
+
+
+# Non-tree plant 
+# (the type is a string such as "Corn", etc)
+@proposition(ENC)
+class Plant(PropBase):
+    def __init__(self, type, x, y) -> None:
+        self.type = type
+        self.x = x
+        self.y = y
+    
+    def __str__(self) -> str:
+        return f"{self.type} at {(self.x, self.y)}"
+    
+
+# If the plant in a cell (x,y) 
+# is being helped by its neighbour(s) at time t
+@proposition(ENC)
+class Helped(PropBase):
+    def __init__(self, x, y, t):
+        self.x = x
+        self.y = y
+        self.t = t
+    
+    def __str__(self) -> str:
+        return f"{self.t}: {(self.x, self.y)} helped"
+
+
+# If the plant in a cell (x,y) 
+# is being harmed by its neighbour(s) at time t
+@proposition(ENC)
+class Harmed(PropBase):
+    def __init__(self, x, y, t):
+        self.x = x
+        self.y = y
+        self.t = t
+    
+    def __str__(self) -> str:
+        return f"{self.t}: {(self.x, self.y)} harmed"
+
+
+# If the plant in a cell (x,y) is alive at time t
+@proposition(ENC)
+class Alive(PropBase):
+    def __init__(self, x, y, t):
+        self.x = x
+        self.y = y
+        self.t = t
+    
+    def __str__(self) -> str:
+        return f"{self.t}: {(self.x, self.y)} alive"
 
 
 # class is just for grouping all data onto one slot that can be accessed with the just the xy value
