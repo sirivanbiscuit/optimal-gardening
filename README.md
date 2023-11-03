@@ -8,8 +8,9 @@ in which all plants are able to thrive.
 
 ### File Structure
 * `run.py`, `test.py`, and the `documents` folder are in their standard locations.
-* The `misc` folder contains temporary templates and interactive scripts (to help
-visualize a certain garden layout).
+* The `misc` folder contains temporary templates and interactive scripts (i.e. to 
+help visualize a certain garden layout). If you are reviewing a draft of this project
+repository, you may ignore this folder, for it is for the purposes of the project group.
 * The `scripts` folder contains class/method files used in the logic execution. 
 Note that the logic execution itself is done with `run.py`
 

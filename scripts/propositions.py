@@ -17,68 +17,95 @@ class PropBase:
 
     def __repr__(self):
         return str(self)
-
-
-# Plant
-@proposition(ENC)
-class Plant(PropBase):
-
-    # Might alter to not def the x,y here, get it defined when added to the tile function or smth
-    def __init__(self):
-        # self.x = x
-        # self.y = y
-        self.type = self
-    def __repr__(self):
-        return f"{self.x}, {self.y}"
-    def type(self):
-        return self.type
     
 
-# Helped
+# TODO: Some of these classes below are very similar.
+# We may want a child of PropBase that has their commonalities. 
+
+# Trees and basic plants 
+# (the type is a string such as "Corn", etc)
 @proposition(ENC)
-class helped(PropBase):
+class Plant(PropBase):
+    def __init__(self, type, x, y):
+        self.type = type
+        self.x = x
+        self.y = y
+    
+    def __str__(self) -> str:
+        return f"{self.type} at {(self.x, self.y)}"
+    
+
+# If the cell (x,y) is to be watered at time t
+@proposition(ENC)
+class Watered(PropBase):
+    def __init__(self, x, y, t):
+        self.x = x
+        self.y = y
+        self.t = t
+    
+    def __str__(self) -> str:
+        return f"{self.t}: {(self.x, self.y)} watered"
+
+
+# If the cell (x,y) has a fence around it
+@proposition(ENC)
+class Fenced(PropBase):
     def __init__(self, x, y):
         self.x = x
         self.y = y
+    
+    def __str__(self) -> str:
+        return f"{(self.x, self.y)} has fence"
+    
 
-
-# class is just for grouping all data onto one slot that can be accessed with the just the xy value
-# could just as easily give the same stuff with a list or something, I just thought of this first
+# If the plant in a cell (x,y) 
+# is being helped by its neighbour(s) at time t
 @proposition(ENC)
-class tile(PropBase):
-    def __init__ (self, x, y):
+class Helped(PropBase):
+    def __init__(self, x, y, t):
         self.x = x
         self.y = y
+        self.t = t
     
-    def __repr__(self):
-        return f"{self.x}, {self.y}"
+    def __str__(self) -> str:
+        return f"{self.t}: {(self.x, self.y)} helped"
 
-        # Others that need to go in here
-    def setplant (self, plant):
-        self.plant_type = Plant.type(plant)
+
+# If the plant in a cell (x,y) 
+# is being harmed by its neighbour(s) at time t
+@proposition(ENC)
+class Harmed(PropBase):
+    def __init__(self, x, y, t):
+        self.x = x
+        self.y = y
+        self.t = t
     
-    #def set
-    def isHelped (self, boolean_help):
-        self.is_helped = boolean_help
-
-    def isHarmed (self, boolean_harmed):
-        self.is_harmed = boolean_harmed
-
-    def isAlive (self, is_alive):
-        self.is_alive = is_alive
+    def __str__(self) -> str:
+        return f"{self.t}: {(self.x, self.y)} harmed"
 
 
-        #self.iswatered = watered
-        #self.isfenced = fenced
-
-    def get_plant(self):
-        return self.plant_type
+# If the plant in a cell (x,y) is alive at time t
+@proposition(ENC)
+class Alive(PropBase):
+    def __init__(self, x, y, t):
+        self.x = x
+        self.y = y
+        self.t = t
     
-    def get_adjacent(self):
-        adjacents = []
+    def __str__(self) -> str:
+        return f"{self.t}: {(self.x, self.y)} alive"
 
-        # probably not alowed based on what he said today, not sure though
-        row_adjacent = grid(x,y+1)
-        column_adjacent = grid(x+1,y)
-        adjacents.append(row_adjacent)
-        adjacents.append(column_adjacent)
+
+# Plant Cell class
+# Note this does NOT use logic libraries (i.e. bauhaus).
+# It makes organizing cell features easier, as opposed to a big array.
+class GardenPlot():
+    def __init__(self, x, y, t, plant_type):
+        self.x = x
+        self.y = y
+        self.plant = Plant(plant_type, x, y)
+        self.watered = Watered(x, y, t)
+        self.fenced = Fenced(x, y)
+        self.helped = Helped(x, y, t)
+        self.harmed = Harmed(x, y, t)
+        self.alive = Alive(x, y, t)

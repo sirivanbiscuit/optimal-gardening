@@ -1,4 +1,6 @@
 """
+OUTDATED, IGNORE UNTIL UPDATED
+
 This is a functional script for playing around with the 'optimal garden'
 mechanics that this project will be trying to model. Build the garden
 below and execute this file to find out more about it.
