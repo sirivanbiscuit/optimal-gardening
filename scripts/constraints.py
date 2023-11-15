@@ -27,6 +27,8 @@ def build_garden_theory() -> Encoding:
     # - Beans and Peppers harm each other if not fenced
     # - Pine Trees harm every plant but themselves if not fenced
 
+    #TODO make plants vertical and horizontal
+    
     # TODO: make watering/fencing.
     # - Watered cell >> plant is alive
     # - Fenced cell >> plant is alive

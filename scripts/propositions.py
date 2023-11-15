@@ -84,7 +84,7 @@ class Harmed(PropBase):
         return f"{self.t}: {(self.x, self.y)} harmed"
 
 
-# If the plant in a cell (x,y) is alive at time t
+# If the plant in a cell (x,y) is alive at time t. If not alive, then dead. 
 @proposition(ENC)
 class Alive(PropBase):
     def __init__(self, x, y, t):
@@ -95,6 +95,25 @@ class Alive(PropBase):
     def __str__(self) -> str:
         return f"{self.t}: {(self.x, self.y)} alive"
 
+@proposition(ENC)
+class Vertical(PropBase):
+    def __init__(self, x, y, t):
+        self.x = x
+        self.y = y
+        self.t = t
+    
+    def __str__(self) -> str:
+        return f"{self.t}: {(self.x, self.y)} vertical"
+    
+@proposition(ENC)
+class Horizontal(PropBase):
+    def __init__(self, x, y, t):
+        self.x = x
+        self.y = y
+        self.t = t
+    
+    def __str__(self) -> str:
+        return f"{self.t}: {(self.x, self.y)} horizontal"
 
 # Plant Cell class
 # Note this does NOT use logic libraries (i.e. bauhaus).
@@ -109,3 +128,5 @@ class GardenPlot():
         self.helped = Helped(x, y, t)
         self.harmed = Harmed(x, y, t)
         self.alive = Alive(x, y, t)
+        self.vertical = Vertical(x, y, t)
+        self.horizontal = Horizontal(x,y,t)

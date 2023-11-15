@@ -1,5 +1,5 @@
 """
-The primary run script for the logic execution.
+The primary run script for the logic execution. AMOGUS
 """
 from bauhaus import Encoding, proposition, constraint
 from bauhaus.utils import count_solutions, likelihood
