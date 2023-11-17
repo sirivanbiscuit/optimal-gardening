@@ -16,12 +16,23 @@ def build_garden_theory() -> Encoding:
 
     garden = setup_default() # default garden, could be changed later
     
+    #Plant Angler
+    for t in garden:
+        for x in garden[t]:
+            for y in garden[t][x]:
+                plot = garden[t][x][y]
+                ENC.add_constraint(plot.corn >> plot.vertical)
+                
+
+
+
     # A plant that is both helped and harmed remains alive
     for t in garden:
         for x in garden[t]:
             for y in garden[t][x]:
                 plot = garden[t][x][y]
                 ENC.add_constraint(plot.helped & ~plot.harmed >> plot.alive)
+
 
     # TODO: add plant relationships.
     # - Corn and Beans help each other if not fenced
