@@ -11,6 +11,9 @@ def build_garden_theory() -> Encoding:
     # Some constraints will be more difficult to
     # implement. They will be done at a later date.
 
+    # MAKE SURE THAT INTERVAL STATES ARE MATERIALLY IMPLIED SOLELY
+    # FROM THE PREVIOUS INTERVAL STATE (except for interval 0)
+
     garden = setup_default() # default garden, could be changed later
     
     # A plant that is both helped and harmed remains alive
