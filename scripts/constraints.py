@@ -18,34 +18,35 @@ def build_garden_theory() -> Encoding:
     
     dictloops = 0
     garden_size = len(garden[0])
+    garden_duration = len(garden)-1
     # A plant that is both helped and harmed remains alive
-    while dictloops < garden_size:
+    while dictloops < garden_duration-1:
         for x in garden[dictloops]:
             for y in garden[dictloops][x]:
                 plot = garden[dictloops][x][y]
                 if x-1 >= 0:
-                    ENC.add_constraint(plot.tomato & garden[dictloops][x-1][y].peppers >> garden[dictloops][x-1][y].helped)
-                    ENC.add_constraint(plot.tomato & garden[dictloops][x-1][y].corn >> garden[dictloops][x-1][y].harmed) 
-                    ENC.add_constraint(plot.beans & garden[dictloops][x-1][y].corn >> garden[dictloops][x-1][y].helped)
-                    ENC.add_constraint(plot.beans & garden[dictloops][x-1][y].peppers >> garden[dictloops][x-1][y].harmed)
+                    ENC.add_constraint(plot.tomato & garden[dictloops][x-1][y].peppers >> garden[dictloops+1][x-1][y].helped)
+                    ENC.add_constraint(plot.tomato & garden[dictloops][x-1][y].corn >> garden[dictloops+1][x-1][y].harmed) 
+                    ENC.add_constraint(plot.beans & garden[dictloops][x-1][y].corn >> garden[dictloops+1][x-1][y].helped)
+                    ENC.add_constraint(plot.beans & garden[dictloops][x-1][y].peppers >> garden[dictloops+1][x-1][y].harmed)
 
                 if x+1 <= garden_size:
-                    ENC.add_constraint(plot.tomato & garden[dictloops][x+1][y].peppers >> garden[dictloops][x+1][y].helped)
-                    ENC.add_constraint(plot.tomato & garden[dictloops][x+1][y].corn >> garden[dictloops][x+1][y].harmed) 
-                    ENC.add_constraint(plot.beans & garden[dictloops][x+1][y].corn >> garden[dictloops][x+1][y].helped)
-                    ENC.add_constraint(plot.beans & garden[dictloops][x+1][y].peppers >> garden[dictloops][x+1][y].harmed)
+                    ENC.add_constraint(plot.tomato & garden[dictloops][x+1][y].peppers >> garden[dictloops+1][x+1][y].helped)
+                    ENC.add_constraint(plot.tomato & garden[dictloops][x+1][y].corn >> garden[dictloops+1][x+1][y].harmed) 
+                    ENC.add_constraint(plot.beans & garden[dictloops][x+1][y].corn >> garden[dictloops+1][x+1][y].helped)
+                    ENC.add_constraint(plot.beans & garden[dictloops][x+1][y].peppers >> garden[dictloops+1][x+1][y].harmed)
 
                 if y-1 >= 0:
-                    ENC.add_constraint(plot.corn & garden[dictloops][x][y-1].beans >> garden[dictloops][x][y-1].helped)
-                    ENC.add_constraint(plot.corn & garden[dictloops][x][y-1].tomatoes >> garden[dictloops][x][y-1].harmed)
-                    ENC.add_constraint(plot.peppers & garden[dictloops][x][y-1].tomatoes >> garden[dictloops][x][y-1].helped)
-                    ENC.add_constraint(plot.peppers & garden[dictloops][x][y-1].beans >> garden[dictloops][x][y-1].harmed)
+                    ENC.add_constraint(plot.corn & garden[dictloops][x][y-1].beans >> garden[dictloops+1][x][y-1].helped)
+                    ENC.add_constraint(plot.corn & garden[dictloops][x][y-1].tomatoes >> garden[dictloops+1][x][y-1].harmed)
+                    ENC.add_constraint(plot.peppers & garden[dictloops][x][y-1].tomatoes >> garden[dictloops+1][x][y-1].helped)
+                    ENC.add_constraint(plot.peppers & garden[dictloops][x][y-1].beans >> garden[dictloops+1][x][y-1].harmed)
 
                 if y+1 <= garden_size:
-                    ENC.add_constraint(plot.corn & garden[dictloops][x][y+1].beans >> garden[dictloops][x][y+1].helped)
-                    ENC.add_constraint(plot.corn & garden[dictloops][x][y+1].tomatoes >> garden[dictloops][x][y+1].harmed)
-                    ENC.add_constraint(plot.peppers & garden[dictloops][x][y+1].tomatoes >> garden[dictloops][x][y+1].helped)
-                    ENC.add_constraint(plot.peppers & garden[dictloops][x][y+1].beans >> garden[dictloops][x][y+1].harmed)
+                    ENC.add_constraint(plot.corn & garden[dictloops][x][y+1].beans >> garden[dictloops+1][x][y+1].helped)
+                    ENC.add_constraint(plot.corn & garden[dictloops][x][y+1].tomatoes >> garden[dictloops+1][x][y+1].harmed)
+                    ENC.add_constraint(plot.peppers & garden[dictloops][x][y+1].tomatoes >> garden[dictloops+1][x][y+1].helped)
+                    ENC.add_constraint(plot.peppers & garden[dictloops][x][y+1].beans >> garden[dictloops+1][x][y+1].harmed)
         dictloops += 1
 
     # TODO: make watering/fencing.
