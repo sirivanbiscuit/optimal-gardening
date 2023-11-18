@@ -16,30 +16,37 @@ def build_garden_theory() -> Encoding:
 
     garden = setup_default() # default garden, could be changed later
     
-    #Plant Angler
-    for t in garden:
-        for x in garden[t]:
-            for y in garden[t][x]:
-                plot = garden[t][x][y]
-                ENC.add_constraint(plot.corn >> plot.vertical)
-                
-
-
-
+    dictloops = 0
+    garden_size = len(garden) - 1
     # A plant that is both helped and harmed remains alive
-    for t in garden:
-        for x in garden[t]:
-            for y in garden[t][x]:
-                plot = garden[t][x][y]
-                ENC.add_constraint(plot.helped & ~plot.harmed >> plot.alive)
+    while dictloops < garden_size:
+        for x in garden[dictloops]:
+            for y in garden[dictloops][x]:
+                plot = garden[dictloops][x][y]
+                if x-1 >= 0:
+                    ENC.add_constraint(plot.tomato & garden[dictloops][x-1][y].peppers >> garden[dictloops][x-1][y].helped)
+                    ENC.add_constraint(plot.tomato & garden[dictloops][x-1][y].corn >> garden[dictloops][x-1][y].harmed) 
+                    ENC.add_constraint(plot.beans & garden[dictloops][x-1][y].peppers >> garden[dictloops][x-1][y].helped)
+                    ENC.add_constraint(plot.beans & garden[dictloops][x-1][y].corn >> garden[dictloops][x-1][y].harmed)
 
+                if x+1 <= garden_size:
+                    ENC.add_constraint(plot.tomato & garden[dictloops][x+1][y].peppers >> garden[dictloops][x+1][y].helped)
+                    ENC.add_constraint(plot.tomato & garden[dictloops][x+1][y].corn >> garden[dictloops][x+1][y].harmed) 
+                    ENC.add_constraint(plot.beans & garden[dictloops][x+1][y].peppers >> garden[dictloops][x+1][y].helped)
+                    ENC.add_constraint(plot.beans & garden[dictloops][x+1][y].corn >> garden[dictloops][x+1][y].harmed)
 
-    # TODO: add plant relationships.
-    # - Corn and Beans help each other if not fenced
-    # - Tomatoes and Peppers help each other if not fenced
-    # - Corn and Tomatoes harm each other if not fenced
-    # - Beans and Peppers harm each other if not fenced
-    # - Pine Trees harm every plant but themselves if not fenced
+                if y-1 >= 0:
+                    ENC.add_constraint(plot.corn & garden[dictloops][x][y-1].beans >> garden[dictloops][x][y-1].helped)
+                    ENC.add_constraint(plot.corn & garden[dictloops][x][y-1].tomatoes >> garden[dictloops][x][y-1].harmed)
+                    ENC.add_constraint(plot.peppers & garden[dictloops][x][y-1].tomatoes >> garden[dictloops][x][y-1].helped)
+                    ENC.add_constraint(plot.peppers & garden[dictloops][x][y-1].beans >> garden[dictloops][x][y-1].harmed)
+
+                if y+1 <= garden_size:
+                    ENC.add_constraint(plot.corn & garden[dictloops][x][y+1].beans >> garden[dictloops][x][y+1].helped)
+                    ENC.add_constraint(plot.corn & garden[dictloops][x][y+1].tomatoes >> garden[dictloops][x][y+1].harmed)
+                    ENC.add_constraint(plot.peppers & garden[dictloops][x][y+1].tomatoes >> garden[dictloops][x][y+1].helped)
+                    ENC.add_constraint(plot.peppers & garden[dictloops][x][y+1].beans >> garden[dictloops][x][y+1].harmed)
+        dictloops += 1
 
     # TODO: make watering/fencing.
     # - Watered cell >> plant is alive
