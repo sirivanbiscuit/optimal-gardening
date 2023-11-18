@@ -144,7 +144,6 @@ class GardenPlot():
         self.tomatoes = Tomatoes(x, y, t)
         self.peppers = Peppers(x, y, t)
         self.pineTree = PineTree(x, y, t)
-        self.fenced = Fenced(x, y)
         self.helped = Helped(x, y, t)
         self.harmed = Harmed(x, y, t)
         self.alive = Alive(x, y, t)
