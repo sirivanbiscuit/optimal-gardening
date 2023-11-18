@@ -1,5 +1,5 @@
 """
-Initialhelloizatiobeesn file for objects used across various scripts.
+Initialization file for objects used across various scripts.
 """
 from bauhaus import Encoding
 
