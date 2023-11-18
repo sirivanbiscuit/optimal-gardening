@@ -17,7 +17,7 @@ def build_garden_theory() -> Encoding:
     garden = setup_default() # default garden, could be changed later
     
     dictloops = 0
-    garden_size = len(garden) - 1
+    garden_size = len(garden[0])
     # A plant that is both helped and harmed remains alive
     while dictloops < garden_size:
         for x in garden[dictloops]:
@@ -26,14 +26,14 @@ def build_garden_theory() -> Encoding:
                 if x-1 >= 0:
                     ENC.add_constraint(plot.tomato & garden[dictloops][x-1][y].peppers >> garden[dictloops][x-1][y].helped)
                     ENC.add_constraint(plot.tomato & garden[dictloops][x-1][y].corn >> garden[dictloops][x-1][y].harmed) 
-                    ENC.add_constraint(plot.beans & garden[dictloops][x-1][y].peppers >> garden[dictloops][x-1][y].helped)
-                    ENC.add_constraint(plot.beans & garden[dictloops][x-1][y].corn >> garden[dictloops][x-1][y].harmed)
+                    ENC.add_constraint(plot.beans & garden[dictloops][x-1][y].corn >> garden[dictloops][x-1][y].helped)
+                    ENC.add_constraint(plot.beans & garden[dictloops][x-1][y].peppers >> garden[dictloops][x-1][y].harmed)
 
                 if x+1 <= garden_size:
                     ENC.add_constraint(plot.tomato & garden[dictloops][x+1][y].peppers >> garden[dictloops][x+1][y].helped)
                     ENC.add_constraint(plot.tomato & garden[dictloops][x+1][y].corn >> garden[dictloops][x+1][y].harmed) 
-                    ENC.add_constraint(plot.beans & garden[dictloops][x+1][y].peppers >> garden[dictloops][x+1][y].helped)
-                    ENC.add_constraint(plot.beans & garden[dictloops][x+1][y].corn >> garden[dictloops][x+1][y].harmed)
+                    ENC.add_constraint(plot.beans & garden[dictloops][x+1][y].corn >> garden[dictloops][x+1][y].helped)
+                    ENC.add_constraint(plot.beans & garden[dictloops][x+1][y].peppers >> garden[dictloops][x+1][y].harmed)
 
                 if y-1 >= 0:
                     ENC.add_constraint(plot.corn & garden[dictloops][x][y-1].beans >> garden[dictloops][x][y-1].helped)
