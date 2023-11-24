@@ -2,9 +2,9 @@
 Method class for building the set of contraints the garden
 will use during logic execution.
 """
-from bauhaus import Encoding, constraint
+from bauhaus import Encoding, Or
 from encoding import ENC
-from setup import G, INIT
+from setup import G, INIT, garden_len
 from propositions import *
 
 # Builds the default garden from setup.py
@@ -30,8 +30,10 @@ def build_init_state():
 # Make sure you import G as the garden grid from setup.py
 def build_garden_theory() -> Encoding:
     
+    # PLANT RELATIONSHIPS
+    # NEEDS INVERSE IMPLICATIONS SO THERE'S ONLY ONE SOLUTION
     dictloops = 0
-    garden_size = len(G[0])
+    garden_size = garden_len
     # Find how many time points the garden exist for, 
     # subtracting the constant key
     garden_duration = len(G)-1
@@ -89,7 +91,37 @@ def build_garden_theory() -> Encoding:
                     ENC.add_constraint(plot.peppers & targ_plot_i.beans >> 
                                        targ_plot_next.harmed)
         dictloops += 1
-
+        
+    
+    # SINGLE INTERVAL CONSTRAINTS
+    for interval in G:
+        if interval != "u":
+            for row in interval:
+                for plot in row:
+                    # One plant per cell
+                    ENC.add_constraint(
+                        plot.corn >> ~Or(plot.get_plants('C')))
+                    ENC.add_constraint(
+                        plot.beans >> ~Or(plot.get_plants('B')))
+                    ENC.add_constraint(
+                        plot.tomatoes >> ~Or(plot.get_plants('T')))
+                    ENC.add_constraint(
+                        plot.peppers >> ~Or(plot.get_plants('P')))
+                    ENC.add_constraint(
+                        plot.pineTree >> ~Or(plot.get_plants('PT')))
+                    
+                    # helped or not hurt impl. alive
+                    ENC.add_constraint(
+                        plot.helped | ~plot.harmed >> plot.alive)
+    
+    
+    # PLANT SPREADING
+    for t in range(len(G)-2):
+        for x in range(len(G[t])):
+            for y in range(len(G[t][x])):
+                pass
+        
+    
 
 
 

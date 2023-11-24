@@ -37,6 +37,7 @@ DO NOT CHANGE THE BELOW LINES.
 All the model exploration may be done with the values above.
 """
 from garden import create_garden
+from propositions import GardenPlot
 
 if garden_dur < 1:
     raise ValueError("The selected garden duration must be postive")
@@ -44,7 +45,7 @@ if garden_dur < 1:
 if state_select not in init_states: 
     raise ValueError("The selected initial config doesn't exist")
 
-valid = ['C', 'B', 'T', 'P', 'PT', '', 'Cf', 'Bf', 'Tf', 'Pf', 'PTf', 'f']
+valid = GardenPlot.PLANTS + GardenPlot.PLANTS_F
 char_map, valid_map, row_l = init_states[state_select], True, 0
 for row in char_map:
     row_l += 1

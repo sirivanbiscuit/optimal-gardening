@@ -145,7 +145,10 @@ class GardenPlot():
         self.harmed = Harmed(x, y, t)
         self.alive = Alive(x, y, t)
     
-    def get_prop(self, id):
+    PLANTS = ['C', 'B', 'T', 'P', 'PT', '']
+    PLANTS_F = ['Cf', 'Bf', 'Tf', 'Pf', 'PTf', 'f']
+    
+    def get_prop(self, id:str):
         if id=='C': return self.corn
         elif id=='B': return self.beans
         elif id=='T': return self.tomatoes
@@ -155,3 +158,9 @@ class GardenPlot():
         elif id=='k': return self.harmed
         elif id=='a': return self.alive
         else: raise ValueError("Not a valid prop ID")
+    
+    def get_plants(self, excluded_id:str='') -> list:
+        all = []
+        for plant in GardenPlot.PLANTS[:-1]:
+            if plant!=excluded_id: all.append(self.get_prop(plant))
+        return all
