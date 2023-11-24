@@ -3,8 +3,23 @@ Method class for building the set of contraints the garden
 will use during logic execution.
 """
 from bauhaus import Encoding, constraint
-from setup import ENC, setup_default, full_garden
+from encoding import ENC
+from setup import G, INIT
 from propositions import *
+
+# Builds the default garden from setup.py
+# - This will not automatically set all plants to alive, as the 
+#   (h | ~k >> a) constraint will do that anyway.
+def build_init_state():
+    s = len(INIT)
+    for x in range(s):
+        for y in range(s):
+            id = INIT[x][y] # full char map
+            p_id = id.replace('f','') # fence ids ommitted
+            plot_i, plot_u = G[0][x][y], G['u'][x][y]
+            if len(p_id): ENC.add_constraint(plot_i.get_prop(p_id))
+            if 'f' in id: ENC.add_constraint(plot_u)
+            
 
 def build_garden_theory() -> Encoding:
     # TODO: completed constraint list
@@ -13,15 +28,13 @@ def build_garden_theory() -> Encoding:
 
     # MAKE SURE THAT INTERVAL STATES ARE MATERIALLY IMPLIED SOLELY
     # FROM THE PREVIOUS INTERVAL STATE (except for interval 0)
-
-    garden = setup_default() # default garden, could be changed later
     
     dictloops = 0
     # Since the garden is square, we need to find the length of one side
-    garden_size = len(garden[0])
+    garden_size = len(G[0])
     
     #Find how many time points the garden exist for, subtracting the constant key
-    garden_duration = len(garden)-1
+    garden_duration = len(G)-1
 
     # We don't need to evaluate the last time point as that is the end. 
     while dictloops < garden_duration-1:

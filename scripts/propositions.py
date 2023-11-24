@@ -4,7 +4,7 @@ used in the logic execution to represent various elements and features of the
 garden being modelled.
 """
 from bauhaus import proposition, constraint
-from setup import ENC
+from encoding import ENC
 
 
 # Everything in this file should be a child of this.
@@ -132,10 +132,7 @@ class Alive(PropBase):
 class GardenPlot():
     """
     Represents the entire data structure of a particular cell
-    at (x,y) at time interval t.\n
-    This class should be thought of more as an array, as it 
-    obtains no methods, and rather just stores all cell data 
-    in one convenient location.
+    at (x,y) at time interval t.
     """
     def __init__(self, x, y, t):
         self.x, self.y, self.t = x, y, t
@@ -147,3 +144,14 @@ class GardenPlot():
         self.helped = Helped(x, y, t)
         self.harmed = Harmed(x, y, t)
         self.alive = Alive(x, y, t)
+    
+    def get_prop(self, id):
+        if id=='C': return self.corn
+        elif id=='B': return self.beans
+        elif id=='T': return self.tomatoes
+        elif id=='P': return self.peppers
+        elif id=='PT': return self.pineTree
+        elif id=='h': return self.helped
+        elif id=='k': return self.harmed
+        elif id=='a': return self.alive
+        else: raise ValueError("Not a valid prop ID")
