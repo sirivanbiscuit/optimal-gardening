@@ -149,6 +149,17 @@ class GardenPlot():
     PLANTS_F = ['Cf', 'Bf', 'Tf', 'Pf', 'PTf', 'f']
     
     def get_prop(self, id:str):
+        """
+        Returns a certain proposition of this cell based off the
+        provided ID string.\n 
+        These strings are the same as the ones used in setup.py.
+
+        Args:
+            id (str): The string ID of the plant (see above)
+
+        Raises:
+            ValueError: If an invalid ID is given
+        """
         if id=='C': return self.corn
         elif id=='B': return self.beans
         elif id=='T': return self.tomatoes
@@ -159,8 +170,20 @@ class GardenPlot():
         elif id=='a': return self.alive
         else: raise ValueError("Not a valid prop ID")
     
-    def get_plants(self, excluded_id:str='') -> list:
+    def get_plants(self, excluded_ids:list=[]) -> list:
+        """
+        Builds an array of all plant propositions available in this cell.\n
+        Useful for saving having to individually reference every field
+        in this class.\n
+
+        Args:
+            excluded_id (str, optional): List of all IDs of the plants you wish 
+            to exclude from the array. Defaults to an empty array.
+
+        Returns:
+            list: An array of all non-excluded plant propositions.
+        """
         all = []
         for plant in GardenPlot.PLANTS[:-1]:
-            if plant!=excluded_id: all.append(self.get_prop(plant))
+            if plant not in excluded_ids: all.append(self.get_prop(plant))
         return all

@@ -122,7 +122,9 @@ def build_garden_theory() -> Encoding:
                 pass
         
     
-
+    
+    # get initial state
+    build_init_state()
 
 
     return ENC
