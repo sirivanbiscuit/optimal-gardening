@@ -11,7 +11,7 @@ from propositions import *
 # - This will not automatically set all plants to alive, as the 
 #   (h | ~k >> a) constraint will do that anyway.
 # - However, it does assert that all cells at the initial state 
-#   are neither helped nore hurt. This is probably the correct
+#   are neither helped nor hurt. This is probably the correct
 #   course of action for now.
 def build_init_state():
     s = len(INIT)
@@ -54,6 +54,8 @@ def build_garden_theory() -> Encoding:
                                        targ_plot_next.helped)
                     ENC.add_constraint(plot.beans & targ_plot_i.peppers >> 
                                        targ_plot_next.harmed)
+                    ENC.add_constraint(plot.pine & ~targ_plot_i.pine >> 
+                                       targ_plot_next.harmed)
                 # Check if there is a plant to the right 
                 if x+1 <= garden_size:
                     targ_plot_i = G[dictloops][x+1][y]
@@ -65,6 +67,8 @@ def build_garden_theory() -> Encoding:
                     ENC.add_constraint(plot.beans & targ_plot_i.corn >> 
                                        targ_plot_next.helped)
                     ENC.add_constraint(plot.beans & targ_plot_i.peppers >> 
+                                       targ_plot_next.harmed)
+                    ENC.add_constraint(plot.pine & ~targ_plot_i.pine >> 
                                        targ_plot_next.harmed)
                 # Check if there is a plant above
                 if y-1 >= 0:
@@ -78,6 +82,8 @@ def build_garden_theory() -> Encoding:
                                        targ_plot_next.helped)
                     ENC.add_constraint(plot.peppers & targ_plot_i.beans >> 
                                        targ_plot_next.harmed)
+                    ENC.add_constraint(plot.pine & ~targ_plot_i.pine >> 
+                                       targ_plot_next.harmed)
                 # Check if there is a plant below
                 if y+1 <= garden_size:
                     targ_plot_i = G[dictloops][x][y+1]
@@ -90,8 +96,11 @@ def build_garden_theory() -> Encoding:
                                        targ_plot_next.helped)
                     ENC.add_constraint(plot.peppers & targ_plot_i.beans >> 
                                        targ_plot_next.harmed)
+                    ENC.add_constraint(plot.pine & ~targ_plot_i.pine >> 
+                                       targ_plot_next.harmed)
         dictloops += 1
-        
+    
+    # PLANT RELATIONSHIPS; INVERSE IMPLICATIONS SO THERE'S ONLY ONE SOLUTION
     
     # SINGLE INTERVAL CONSTRAINTS
     for interval in G:
