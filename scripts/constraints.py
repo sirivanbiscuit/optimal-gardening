@@ -119,10 +119,63 @@ def build_garden_theory() -> Encoding:
     for t in range(len(G)-2):
         for x in range(len(G[t])):
             for y in range(len(G[t][x])):
-                pass
-        
-    
-    
+                
+                #array of spreading value in order
+                # for example corn: (beans, peppers, tomatoes, dead)
+                above = plot(x,y+1,t)
+                below = plot(x,y-1,t)
+                left = plot(x-1,y,t)
+                right = plot(x+1,y,t)
+
+                #Looks at plant in all directions around, if at least one it becomes that plant (in order of priority)
+                ENC.add_constraint(plot.corn & ~plot.alive & (above.beans | right.beans | left.beans | below.beans) >> plot.beans(x,y,t+1) & plot.alive(x,y,t+1))
+                ENC.add_constraint(plot.corn & ~plot.alive & ~(above.beans | right.beans | left.beans | below.beans) & \
+                                    (above.peppers | right.peppers | left.peppers | below.peppers) >> plot.peppers(x,y,t+1) & plot.alive(x,y,t+1))
+                ENC.add_constraint(plot.corn & ~plot.alive & ~(above.beans | right.beans | left.beans | below.beans) & \
+                                   ~(above.peppers | right.peppers | left.peppers | below.peppers) & \
+                                    (above.tomato | left.tomato | right.tomato | below.tomato) >> plot.tomato(x,y,t+1) & plot.alive(x,y,t+1))
+                ENC.add_constraint(plot.corn & ~plot.alive & ~(above.beans | right.beans | left.beans | below.beans) & \
+                                   ~(above.peppers | right.peppers | left.peppers | below.peppers) & \
+                                    ~(above.tomato | left.tomato | right.tomato | below.tomato) >> plot.corn(x,y,t+1) & ~plot.alive(x,y,t+1))
+                
+                ENC.add_constraint(plot.beans & ~plot.alive & (above.corn | right.corn | left.corn | below.corn) >> plot.corn(x,y,t+1) & plot.alive(x,y,t+1))
+                ENC.add_constraint(plot.beans & ~plot.alive & ~(above.corn | right.corn | left.corn | below.corn) & \
+                                   (above.tomato | left.tomato | right.tomato | below.tomato) >> plot.tomato(x,y,t+1) & plot.alive(x,y,t+1))
+                ENC.add_constraint(plot.beans & ~plot.alive & ~(above.corn | right.corn | left.corn | below.corn) & \
+                                   ~(above.tomato | left.tomato | right.tomato | below.tomato) & \
+                                    (above.peppers | right.peppers | left.peppers | below.peppers) >> plot.peppers(x,y,t+1) & plot.alive(x,y,t+1))
+                ENC.add_constraint(plot.beans & ~plot.alive & ~(above.corn | right.corn | left.corn | below.corn) & \
+                                   ~(above.tomato | left.tomato | right.tomato | below.tomato) & \
+                                    ~(above.peppers | right.peppers | left.peppers | below.peppers) >> plot.beans(x,y,t+1) & ~plot.alive(x,y,t+1))
+                
+                ENC.add_constraint(plot.peppers & ~plot.alive & (above.tomato | left.tomato | right.tomato | below.tomato) >> plot.tomato(x,y,t+1) & plot.alive(x,y,t+1))
+                ENC.add_constraint(plot.peppers & ~plot.alive & ~(above.tomato | left.tomato | right.tomato | below.tomato) & \
+                                   (above.corn | right.corn | left.corn | below.corn) >> plot.corn(x,y,t+1) & plot.alive(x,y,t+1))
+                ENC.add_constraint(plot.peppers & ~plot.alive & ~(above.tomato | left.tomato | right.tomato | below.tomato) & \
+                                    ~(above.corn | right.corn | left.corn | below.corn) & \
+                                    (above.beans | right.beans | left.beans | below.beans) >> plot.beans(x,y,t+1) & plot.alive(x,y,t+1))
+                ENC.add_constraint(plot.peppers & ~plot.alive & ~(above.tomato | left.tomato | right.tomato | below.tomato) & \
+                                    ~(above.corn | right.corn | left.corn | below.corn) & \
+                                    ~(above.beans | right.beans | left.beans | below.beans) >> plot.peppers(x,y,t+1) & ~plot.alive(x,y,t+1))
+                
+                ENC.add_constraint(plot.tomato & ~plot.alive & (above.peppers | left.peppers | right.peppers | below.peppers) >> plot.peppers(x,y,t+1) & plot.alive(x,y,t+1))
+                ENC.add_constraint(plot.tomato & ~plot.alive & ~(above.peppers | left.peppers | right.peppers | below.peppers) & \
+                                   (above.beans | right.beans | left.beans | below.beans) >> plot.beans(x,y,t+1) & plot.alive(x,y,t+1))
+                ENC.add_constraint(plot.tomato & ~plot.alive & ~(above.peppers | left.peppers | right.peppers | below.peppers) & \
+                                   ~(above.beans | right.beans | left.beans | below.beans) & \
+                                    (above.corn | right.corn | left.corn | below.corn) >> plot.corn(x,y,t+1) & plot.alive(x,y,t+1))
+                ENC.add_constraint(plot.tomato & ~plot.alive & ~(above.peppers | left.peppers | right.peppers | below.peppers) & \
+                                   ~(above.beans | right.beans | left.beans | below.beans) & \
+                                    ~(above.corn | right.corn | left.corn | below.corn) >> plot.tomato(x,y,t+1) & ~plot.alive(x,y,t+1))
+
+                    
+
+                
+
+
+                    
+
+
     # get initial state
     build_init_state()
 
