@@ -127,6 +127,7 @@ def build_garden_theory() -> Encoding:
                 left = G[t][x][x-1]
                 right = G[t][x][x+1]
                 next = G[t+1][x][y]
+                plot = G[t][x][y]
 
                 #Looks at plant in all directions around, if at least one it becomes that plant (in order of priority)
                 ENC.add_constraint(plot.corn & ~plot.alive & (above.beans | right.beans | left.beans | below.beans) >> next.beans & next.alive)
@@ -139,35 +140,35 @@ def build_garden_theory() -> Encoding:
                                    ~(above.peppers | right.peppers | left.peppers | below.peppers) & \
                                     ~(above.tomato | left.tomato | right.tomato | below.tomato) >> next.corn & ~next.alive)
                 
-                ENC.add_constraint(plot.beans & ~plot.alive & (above.corn | right.corn | left.corn | below.corn) >> plot.corn(x,y,t+1) & plot.alive(x,y,t+1))
+                ENC.add_constraint(plot.beans & ~plot.alive & (above.corn | right.corn | left.corn | below.corn) >> next.corn & next.alive)
                 ENC.add_constraint(plot.beans & ~plot.alive & ~(above.corn | right.corn | left.corn | below.corn) & \
-                                   (above.tomato | left.tomato | right.tomato | below.tomato) >> plot.tomato(x,y,t+1) & plot.alive(x,y,t+1))
-                ENC.add_constraint(plot.beans & ~plot.alive & ~(above.corn | right.corn | left.corn | below.corn) & \
-                                   ~(above.tomato | left.tomato | right.tomato | below.tomato) & \
-                                    (above.peppers | right.peppers | left.peppers | below.peppers) >> plot.peppers(x,y,t+1) & plot.alive(x,y,t+1))
+                                   (above.tomato | left.tomato | right.tomato | below.tomato) >> next.tomato & next.alive)
                 ENC.add_constraint(plot.beans & ~plot.alive & ~(above.corn | right.corn | left.corn | below.corn) & \
                                    ~(above.tomato | left.tomato | right.tomato | below.tomato) & \
-                                    ~(above.peppers | right.peppers | left.peppers | below.peppers) >> plot.beans(x,y,t+1) & ~plot.alive(x,y,t+1))
+                                    (above.peppers | right.peppers | left.peppers | below.peppers) >> next.peppers & next.alive)
+                ENC.add_constraint(plot.beans & ~plot.alive & ~(above.corn | right.corn | left.corn | below.corn) & \
+                                   ~(above.tomato | left.tomato | right.tomato | below.tomato) & \
+                                    ~(above.peppers | right.peppers | left.peppers | below.peppers) >> next.beans & ~next.alive)
                 
-                ENC.add_constraint(plot.peppers & ~plot.alive & (above.tomato | left.tomato | right.tomato | below.tomato) >> plot.tomato(x,y,t+1) & plot.alive(x,y,t+1))
+                ENC.add_constraint(plot.peppers & ~plot.alive & (above.tomato | left.tomato | right.tomato | below.tomato) >> next.tomato & next.alive)
                 ENC.add_constraint(plot.peppers & ~plot.alive & ~(above.tomato | left.tomato | right.tomato | below.tomato) & \
-                                   (above.corn | right.corn | left.corn | below.corn) >> plot.corn(x,y,t+1) & plot.alive(x,y,t+1))
+                                   (above.corn | right.corn | left.corn | below.corn) >> next.corn & next.alive)
                 ENC.add_constraint(plot.peppers & ~plot.alive & ~(above.tomato | left.tomato | right.tomato | below.tomato) & \
                                     ~(above.corn | right.corn | left.corn | below.corn) & \
-                                    (above.beans | right.beans | left.beans | below.beans) >> plot.beans(x,y,t+1) & plot.alive(x,y,t+1))
+                                    (above.beans | right.beans | left.beans | below.beans) >> next.beans & next.alive)
                 ENC.add_constraint(plot.peppers & ~plot.alive & ~(above.tomato | left.tomato | right.tomato | below.tomato) & \
                                     ~(above.corn | right.corn | left.corn | below.corn) & \
-                                    ~(above.beans | right.beans | left.beans | below.beans) >> plot.peppers(x,y,t+1) & ~plot.alive(x,y,t+1))
+                                    ~(above.beans | right.beans | left.beans | below.beans) >> next.peppers & ~next.alive)
                 
-                ENC.add_constraint(plot.tomato & ~plot.alive & (above.peppers | left.peppers | right.peppers | below.peppers) >> plot.peppers(x,y,t+1) & plot.alive(x,y,t+1))
+                ENC.add_constraint(plot.tomato & ~plot.alive & (above.peppers | left.peppers | right.peppers | below.peppers) >> next.peppers & next.alive)
                 ENC.add_constraint(plot.tomato & ~plot.alive & ~(above.peppers | left.peppers | right.peppers | below.peppers) & \
-                                   (above.beans | right.beans | left.beans | below.beans) >> plot.beans(x,y,t+1) & plot.alive(x,y,t+1))
-                ENC.add_constraint(plot.tomato & ~plot.alive & ~(above.peppers | left.peppers | right.peppers | below.peppers) & \
-                                   ~(above.beans | right.beans | left.beans | below.beans) & \
-                                    (above.corn | right.corn | left.corn | below.corn) >> plot.corn(x,y,t+1) & plot.alive(x,y,t+1))
+                                   (above.beans | right.beans | left.beans | below.beans) >> next.beans & next.alive)
                 ENC.add_constraint(plot.tomato & ~plot.alive & ~(above.peppers | left.peppers | right.peppers | below.peppers) & \
                                    ~(above.beans | right.beans | left.beans | below.beans) & \
-                                    ~(above.corn | right.corn | left.corn | below.corn) >> plot.tomato(x,y,t+1) & ~plot.alive(x,y,t+1))
+                                    (above.corn | right.corn | left.corn | below.corn) >> next.corn & next.alive)
+                ENC.add_constraint(plot.tomato & ~plot.alive & ~(above.peppers | left.peppers | right.peppers | below.peppers) & \
+                                   ~(above.beans | right.beans | left.beans | below.beans) & \
+                                    ~(above.corn | right.corn | left.corn | below.corn) >> next.tomato & ~next.alive)
 
                     
 
