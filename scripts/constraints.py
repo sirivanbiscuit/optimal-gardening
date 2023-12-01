@@ -122,10 +122,10 @@ def build_garden_theory() -> Encoding:
                 
                 #array of spreading value in order
                 # for example corn: (beans, peppers, tomatoes, dead)
-                above = plot(x,y+1,t)
-                below = plot(x,y-1,t)
-                left = plot(x-1,y,t)
-                right = plot(x+1,y,t)
+                above = G[x][y+1][t]
+                below = G[x][y-1][t]
+                left = G[x-1][y][t]
+                right = G[x+1][y][t]
 
                 #Looks at plant in all directions around, if at least one it becomes that plant (in order of priority)
                 ENC.add_constraint(plot.corn & ~plot.alive & (above.beans | right.beans | left.beans | below.beans) >> plot.beans(x,y,t+1) & plot.alive(x,y,t+1))
