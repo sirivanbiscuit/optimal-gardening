@@ -63,6 +63,15 @@ class Peppers(Plant):
 @proposition(ENC) 
 class PineTree(Plant):
     def __init__(self, x, y, t): super().__init__("Pine Tree", x, y, t)
+    
+    
+"""
+Placeholder "plant" variables. These will be placed similar to how
+plants are, but will have different (or no) relationships.
+"""
+@proposition(ENC)
+class Rock(Plant):
+    def __init__(self, x, y, t): super().__init__("Rock", x, y, t)
 
 
 """
@@ -141,12 +150,13 @@ class GardenPlot():
         self.tomatoes = Tomatoes(x, y, t)
         self.peppers = Peppers(x, y, t)
         self.pineTree = PineTree(x, y, t)
+        self.rock = Rock(x, y, t)
         self.helped = Helped(x, y, t)
         self.harmed = Harmed(x, y, t)
         self.alive = Alive(x, y, t)
     
-    PLANTS = ['C', 'B', 'T', 'P', 'PT', '']
-    PLANTS_F = ['Cf', 'Bf', 'Tf', 'Pf', 'PTf', 'f']
+    PLANTS = ['C', 'B', 'T', 'P', 'PT', 'R', '']
+    PLANTS_F = ['Cf', 'Bf', 'Tf', 'Pf', 'PTf', 'Rf', 'f']
     
     def get_prop(self, id:str):
         """
@@ -165,25 +175,8 @@ class GardenPlot():
         elif id=='T': return self.tomatoes
         elif id=='P': return self.peppers
         elif id=='PT': return self.pineTree
+        elif id=='R': return self.rock
         elif id=='h': return self.helped
         elif id=='k': return self.harmed
         elif id=='a': return self.alive
         else: raise ValueError("Not a valid prop ID")
-    
-    def get_plants(self, excluded_ids:list=[]) -> list:
-        """
-        Builds an array of all plant propositions available in this cell.\n
-        Useful for saving having to individually reference every field
-        in this class.\n
-
-        Args:
-            excluded_id (str, optional): List of all IDs of the plants you wish 
-            to exclude from the array. Defaults to an empty array.
-
-        Returns:
-            list: An array of all non-excluded plant propositions.
-        """
-        all = []
-        for plant in GardenPlot.PLANTS[:-1]:
-            if plant not in excluded_ids: all.append(self.get_prop(plant))
-        return all

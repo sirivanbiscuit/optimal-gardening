@@ -135,19 +135,20 @@ def build_garden_theory() -> Encoding:
                 for plot in row:
                     # One plant per cell
                     ENC.add_constraint(
-                        plot.corn >> ~Or(plot.get_plants('C')))
+                        plot.corn >> ~plot.beans & ~plot.tomatoes & ~plot.peppers & ~plot.pineTree & ~plot.rock)
                     ENC.add_constraint(
-                        plot.beans >> ~Or(plot.get_plants('B')))
+                        plot.beans >> ~plot.corn & ~plot.tomatoes & ~plot.peppers & ~plot.pineTree & ~plot.rock)
                     ENC.add_constraint(
-                        plot.tomatoes >> ~Or(plot.get_plants('T')))
+                        plot.tomatoes >> ~plot.corn & ~plot.beans & ~plot.peppers & ~plot.pineTree & ~plot.rock)
                     ENC.add_constraint(
-                        plot.peppers >> ~Or(plot.get_plants('P')))
+                        plot.peppers >> ~plot.corn & ~plot.beans & ~plot.tomatoes & ~plot.pineTree & ~plot.rock)
                     ENC.add_constraint(
-                        plot.pineTree >> ~Or(plot.get_plants('PT')))
+                        plot.pineTree >> ~plot.corn & ~plot.beans & ~plot.tomatoes & ~plot.peppers & ~plot.rock)
+                    ENC.add_constraint(
+                        plot.rock >> ~plot.corn & ~plot.beans & ~plot.tomatoes & ~plot.peppers & ~plot.pineTree)
                     
                     # helped or not hurt impl. alive
-                    ENC.add_constraint(
-                        plot.helped | ~plot.harmed >> plot.alive)
+                    ENC.add_constraint(plot.helped | ~plot.harmed >> plot.alive)
     
     
     # PLANT SPREADING
