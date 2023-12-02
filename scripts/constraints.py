@@ -115,6 +115,7 @@ def build_garden_theory() -> Encoding:
     while dictloops < garden_duration-1:
         for x in range(1,garden_size-1):
             for y in range(1,garden_size-1):
+                plot = G[dictloops][x][y]
                 above_plot_i = G[dictloops][x][y+1]
                 below_plot_i = G[dictloops][x][y-1]
                 left_plot_i = G[dictloops][x-1][y]
