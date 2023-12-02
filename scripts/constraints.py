@@ -182,6 +182,7 @@ def build_garden_theory() -> Encoding:
 
                 #Looks at plant in all directions around, if at least one it becomes that plant (in order of priority)
                 #Corn
+                ENC.add_constraint((plot.corn & plot.alive) >> (next.corn))
                 ENC.add_constraint((plot.corn & ~plot.alive & (above.beans | right.beans | left.beans | below.beans)) >> (next.beans & next.alive))
 
                 ENC.add_constraint((plot.corn & ~plot.alive & (~above.beans & ~right.beans & ~left.beans & ~below.beans) & 
@@ -196,6 +197,7 @@ def build_garden_theory() -> Encoding:
                                     (~above.tomatoes & ~left.tomatoes & ~right.tomatoes & ~below.tomatoes)) >> (next.corn & ~next.alive))
                 
                 #Beans
+                ENC.add_constraint((plot.beans & plot.alive) >> (next.beans))
                 ENC.add_constraint((plot.beans & ~plot.alive & (above.corn | right.corn | left.corn | below.corn)) >> (next.corn & next.alive))
 
                 ENC.add_constraint((plot.beans & ~plot.alive & (~above.corn & ~right.corn & ~left.corn & ~below.corn) & 
@@ -210,6 +212,7 @@ def build_garden_theory() -> Encoding:
                                     (~above.peppers & ~right.peppers & ~left.peppers & ~below.peppers)) >> (next.beans & ~next.alive))
                 
                 #Peppers
+                ENC.add_constraint((plot.peppers & plot.alive) >> (next.peppers))
                 ENC.add_constraint((plot.peppers & ~plot.alive & (above.tomatoes | left.tomatoes | right.tomatoes | below.tomatoes)) >> (next.tomatoes & next.alive))
 
                 ENC.add_constraint((plot.peppers & ~plot.alive & (~above.tomatoes & ~left.tomatoes & ~right.tomatoes & ~below.tomatoes) & 
@@ -224,6 +227,7 @@ def build_garden_theory() -> Encoding:
                                     (~above.beans & ~right.beans & ~left.beans & ~below.beans)) >> (next.peppers & ~next.alive))
                 
                 #Tomatoes
+                ENC.add_constraint((plot.tomatoes & plot.alive) >> (next.tomatoes))
                 ENC.add_constraint((plot.tomatoes & ~plot.alive & (above.peppers | left.peppers | right.peppers | below.peppers)) >> (next.peppers & next.alive))
 
                 ENC.add_constraint((plot.tomatoes & ~plot.alive & (~above.peppers & ~right.peppers & ~left.peppers & ~below.peppers) & 
