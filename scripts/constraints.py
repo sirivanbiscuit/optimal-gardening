@@ -179,45 +179,68 @@ def build_garden_theory() -> Encoding:
                 plot = G[t][x][y]
 
                 #Looks at plant in all directions around, if at least one it becomes that plant (in order of priority)
+                #Corn
                 ENC.add_constraint((plot.corn & ~plot.alive & (above.beans | right.beans | left.beans | below.beans)) >> (next.beans & next.alive))
-                ENC.add_constraint((plot.corn & ~plot.alive & ~(above.beans | right.beans | left.beans | below.beans) & \
+
+                ENC.add_constraint((plot.corn & ~plot.alive & (~above.beans & ~right.beans & ~left.beans & ~below.beans) & \
                                     (above.peppers | right.peppers | left.peppers | below.peppers)) >> (next.peppers & next.alive))
-                ENC.add_constraint((plot.corn & ~plot.alive & ~(above.beans | right.beans | left.beans | below.beans) & \
-                                   ~(above.peppers | right.peppers | left.peppers | below.peppers) & \
+                
+                ENC.add_constraint((plot.corn & ~plot.alive & (~above.beans & ~right.beans & ~left.beans & ~below.beans) & \
+                                   (~above.peppers & ~right.peppers & ~left.peppers & ~below.peppers) & \
                                     (above.tomatoes | left.tomatoes | right.tomatoes | below.tomatoes)) >> (next.tomatoes & next.alive))
-                ENC.add_constraint((plot.corn & ~plot.alive & ~(above.beans | right.beans | left.beans | below.beans) & \
-                                   ~(above.peppers | right.peppers | left.peppers | below.peppers) & \
-                                    ~(above.tomatoes | left.tomatoes | right.tomatoes | below.tomatoes)) >> (next.corn & ~next.alive))
                 
+                ENC.add_constraint((plot.corn & ~plot.alive & (~above.beans & ~right.beans & ~left.beans & ~below.beans) & \
+                                   (~above.peppers & ~right.peppers & ~left.peppers & ~below.peppers) & \
+                                    (~above.tomatoes & ~left.tomatoes & ~right.tomatoes & ~below.tomatoes)) >> (next.corn & ~next.alive))
+                
+                #Beans
                 ENC.add_constraint((plot.beans & ~plot.alive & (above.corn | right.corn | left.corn | below.corn)) >> (next.corn & next.alive))
-                ENC.add_constraint((plot.beans & ~plot.alive & ~(above.corn | right.corn | left.corn | below.corn) & \
+
+                ENC.add_constraint((plot.beans & ~plot.alive & (~above.corn & ~right.corn & ~left.corn & ~below.corn) & \
                                    (above.tomatoes | left.tomatoes | right.tomatoes | below.tomatoes)) >> (next.tomatoes & next.alive))
-                ENC.add_constraint((plot.beans & ~plot.alive & ~(above.corn | right.corn | left.corn | below.corn) & \
-                                   ~(above.tomatoes | left.tomatoes | right.tomatoes | below.tomatoes) & \
+                
+                ENC.add_constraint((plot.beans & ~plot.alive & (~above.corn & ~right.corn & ~left.corn & ~below.corn) & \
+                                   (~above.tomatoes & ~left.tomatoes & ~right.tomatoes & ~below.tomatoes) & \
                                     (above.peppers | right.peppers | left.peppers | below.peppers)) >> (next.peppers & next.alive))
-                ENC.add_constraint((plot.beans & ~plot.alive & ~(above.corn | right.corn | left.corn | below.corn) & \
-                                   ~(above.tomatoes | left.tomatoes | right.tomatoes | below.tomatoes) & \
-                                    ~(above.peppers | right.peppers | left.peppers | below.peppers)) >> (next.beans & ~next.alive))
                 
+                ENC.add_constraint((plot.beans & ~plot.alive & (~above.corn & ~right.corn & ~left.corn & ~below.corn) & \
+                                   (~above.tomatoes & ~left.tomatoes & ~right.tomatoes & ~below.tomatoes) & \
+                                    (~above.peppers & ~right.peppers & ~left.peppers & ~below.peppers)) >> (next.beans & ~next.alive))
+                
+                #Peppers
                 ENC.add_constraint((plot.peppers & ~plot.alive & (above.tomatoes | left.tomatoes | right.tomatoes | below.tomatoes)) >> (next.tomatoes & next.alive))
-                ENC.add_constraint((plot.peppers & ~plot.alive & ~(above.tomatoes | left.tomatoes | right.tomatoes | below.tomatoes) & \
+
+                ENC.add_constraint((plot.peppers & ~plot.alive & (~above.tomatoes & ~left.tomatoes & ~right.tomatoes & ~below.tomatoes) & \
                                    (above.corn | right.corn | left.corn | below.corn)) >> (next.corn & next.alive))
-                ENC.add_constraint((plot.peppers & ~plot.alive & ~(above.tomatoes | left.tomatoes | right.tomatoes | below.tomatoes) & \
-                                    ~(above.corn | right.corn | left.corn | below.corn) & \
-                                    (above.beans | right.beans | left.beans | below.beans)) >> (next.beans & next.alive))
-                ENC.add_constraint((plot.peppers & ~plot.alive & ~(above.tomatoes | left.tomatoes | right.tomatoes | below.tomatoes) & \
-                                    ~(above.corn | right.corn | left.corn | below.corn) & \
-                                    ~(above.beans | right.beans | left.beans | below.beans)) >> (next.peppers & ~next.alive))
                 
+                ENC.add_constraint((plot.peppers & ~plot.alive & (~above.tomatoes & ~left.tomatoes & ~right.tomatoes & ~below.tomatoes) & \
+                                    (~above.corn & ~right.corn & ~left.corn & ~below.corn) & \
+                                    (above.beans | right.beans | left.beans | below.beans)) >> (next.beans & next.alive))
+                
+                ENC.add_constraint((plot.peppers & ~plot.alive & (~above.tomatoes & ~left.tomatoes & ~right.tomatoes & ~below.tomatoes) & \
+                                    (~above.corn & ~right.corn & ~left.corn & ~below.corn) & \
+                                    (~above.beans & ~right.beans & ~left.beans & ~below.beans)) >> (next.peppers & ~next.alive))
+                
+                #Tomatoes
                 ENC.add_constraint((plot.tomatoes & ~plot.alive & (above.peppers | left.peppers | right.peppers | below.peppers)) >> (next.peppers & next.alive))
-                ENC.add_constraint((plot.tomatoes & ~plot.alive & ~(above.peppers | left.peppers | right.peppers | below.peppers) & \
+
+                ENC.add_constraint((plot.tomatoes & ~plot.alive & (~above.peppers & ~right.peppers & ~left.peppers & ~below.peppers) & \
                                    (above.beans | right.beans | left.beans | below.beans)) >> (next.beans & next.alive))
-                ENC.add_constraint((plot.tomatoes & ~plot.alive & ~(above.peppers | left.peppers | right.peppers | below.peppers) & \
-                                   ~(above.beans | right.beans | left.beans | below.beans) & \
+                
+                ENC.add_constraint((plot.tomatoes & ~plot.alive & (~above.peppers & ~right.peppers & ~left.peppers & ~below.peppers) & \
+                                   (~above.beans & ~right.beans & ~left.beans & ~below.beans) & \
                                     (above.corn | right.corn | left.corn | below.corn)) >> (next.corn & next.alive))
-                ENC.add_constraint((plot.tomatoes & ~plot.alive & ~(above.peppers | left.peppers | right.peppers | below.peppers) & \
-                                   ~(above.beans | right.beans | left.beans | below.beans) & \
-                                    ~(above.corn | right.corn | left.corn | below.corn)) >> (next.tomatoes & ~next.alive))
+                
+                ENC.add_constraint((plot.tomatoes & ~plot.alive & (~above.peppers & ~right.peppers & ~left.peppers & ~below.peppers) & \
+                                   (~above.beans & ~right.beans & ~left.beans & ~below.beans) & \
+                                    (~above.corn & ~right.corn & ~left.corn & ~below.corn)) >> (next.tomatoes & ~next.alive))
+
+                    
+
+                
+
+
+                    
 
                     
     # get initial state
