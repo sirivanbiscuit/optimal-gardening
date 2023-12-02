@@ -146,15 +146,15 @@ def build_garden_theory() -> Encoding:
                 for plot in row:
                     # One plant per cell
                     ENC.add_constraint(
-                        plot.corn >> ~plot.beans & ~plot.tomatoes & ~plot.peppers & ~plot.pineTree & ~plot.rock)
+                        plot.corn >> (~plot.beans & ~plot.tomatoes & ~plot.peppers & ~plot.pineTree & ~plot.rock))
                     ENC.add_constraint(
-                        plot.beans >> ~plot.corn & ~plot.tomatoes & ~plot.peppers & ~plot.pineTree & ~plot.rock)
+                        plot.beans >> (~plot.corn & ~plot.tomatoes & ~plot.peppers & ~plot.pineTree & ~plot.rock))
                     ENC.add_constraint(
-                        plot.tomatoes >> ~plot.corn & ~plot.beans & ~plot.peppers & ~plot.pineTree & ~plot.rock)
+                        plot.tomatoes >> (~plot.corn & ~plot.beans & ~plot.peppers & ~plot.pineTree & ~plot.rock))
                     ENC.add_constraint(
-                        plot.peppers >> ~plot.corn & ~plot.beans & ~plot.tomatoes & ~plot.pineTree & ~plot.rock)
+                        plot.peppers >> (~plot.corn & ~plot.beans & ~plot.tomatoes & ~plot.pineTree & ~plot.rock))
                     ENC.add_constraint(
-                        plot.pineTree >> ~plot.corn & ~plot.beans & ~plot.tomatoes & ~plot.peppers & ~plot.rock)
+                        plot.pineTree >> (~plot.corn & ~plot.beans & ~plot.tomatoes & ~plot.peppers & ~plot.rock))
                     
                     # Rock makes everything false
                     ENC.add_constraint(
@@ -220,14 +220,6 @@ def build_garden_theory() -> Encoding:
                 ENC.add_constraint(plot.tomatoes & ~plot.alive & ~(above.peppers | left.peppers | right.peppers | below.peppers) & \
                                    ~(above.beans | right.beans | left.beans | below.beans) & \
                                     ~(above.corn | right.corn | left.corn | below.corn) >> next.tomatoes & ~next.alive)
-
-                    
-
-                
-
-
-                    
-
 
     # get initial state
     build_init_state()
