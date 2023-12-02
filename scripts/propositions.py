@@ -4,7 +4,7 @@ used in the logic execution to represent various elements and features of the
 garden being modelled.
 """
 from bauhaus import proposition, constraint
-from setup import ENC
+from scripts.encoding import ENC
 
 
 # Everything in this file should be a child of this.
@@ -63,6 +63,15 @@ class Peppers(Plant):
 @proposition(ENC) 
 class PineTree(Plant):
     def __init__(self, x, y, t): super().__init__("Pine Tree", x, y, t)
+    
+    
+"""
+Placeholder "plant" variables. These will be placed similar to how
+plants are, but will have different (or no) relationships.
+"""
+@proposition(ENC)
+class Rock(Plant):
+    def __init__(self, x, y, t): super().__init__("Rock", x, y, t)
 
 
 """
@@ -72,7 +81,6 @@ If a proposition has usage limits, annotate the class @constraint.
 """
 
 # Fenced f(x,y)
-@constraint.at_most_one(ENC)
 @proposition(ENC)
 class Fenced(PropBase):
     """
@@ -132,10 +140,7 @@ class Alive(PropBase):
 class GardenPlot():
     """
     Represents the entire data structure of a particular cell
-    at (x,y) at time interval t.\n
-    This class should be thought of more as an array, as it 
-    obtains no methods, and rather just stores all cell data 
-    in one convenient location.
+    at (x,y) at time interval t.
     """
     def __init__(self, x, y, t):
         self.x, self.y, self.t = x, y, t
@@ -144,7 +149,33 @@ class GardenPlot():
         self.tomatoes = Tomatoes(x, y, t)
         self.peppers = Peppers(x, y, t)
         self.pineTree = PineTree(x, y, t)
-        self.fenced = Fenced(x, y)
+        self.rock = Rock(x, y, t)
         self.helped = Helped(x, y, t)
         self.harmed = Harmed(x, y, t)
         self.alive = Alive(x, y, t)
+    
+    PLANTS = ['C', 'B', 'T', 'P', 'PT', 'R', '']
+    PLANTS_F = ['Cf', 'Bf', 'Tf', 'Pf', 'PTf', 'Rf', 'f']
+    
+    def get_prop(self, id:str):
+        """
+        Returns a certain proposition of this cell based off the
+        provided ID string.\n 
+        These strings are the same as the ones used in setup.py.
+
+        Args:
+            id (str): The string ID of the plant (see above)
+
+        Raises:
+            ValueError: If an invalid ID is given
+        """
+        if id=='C': return self.corn
+        elif id=='B': return self.beans
+        elif id=='T': return self.tomatoes
+        elif id=='P': return self.peppers
+        elif id=='PT': return self.pineTree
+        elif id=='R': return self.rock
+        elif id=='h': return self.helped
+        elif id=='k': return self.harmed
+        elif id=='a': return self.alive
+        else: raise ValueError("Not a valid prop ID")
