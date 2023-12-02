@@ -1,9 +1,12 @@
-from propositions import GardenPlot, Fenced
+from scripts.propositions import GardenPlot, Fenced
 
 def create_garden(length: int, duration: int) -> dict:
     """
     Creates a square garden grid of the given length containing 
     all necessary propositions in all available cells.\n
+    This grid will be forcibly surrounded on all sides by rocks
+    to make constraints easier. Thus, the actual array length will
+    be length+2.\n
     A dictionary will be formed containing a map of all gardens for
     each relevant time interval.\n
     The dictionary will also contain a key "u" containing an array
@@ -15,18 +18,19 @@ def create_garden(length: int, duration: int) -> dict:
         duration (int): the number of time intervals.
     """
     time_map = {}
+    total_len = length+2
     
     # universals
     time_map['u'] = [
-        [Fenced(x,y) for y in range(length)] 
-            for x in range(length)
+        [Fenced(x,y) for y in range(total_len)] 
+            for x in range(total_len)
     ]
     
     # gardens in each time interval
     for t in range(duration):
         time_map[t] = [
-            [GardenPlot(x,y,t) for y in range(length)] 
-            for x in range(length)
+            [GardenPlot(x,y,t) for y in range(total_len)] 
+            for x in range(total_len)
         ]
         
     return time_map
