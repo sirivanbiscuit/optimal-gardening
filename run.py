@@ -4,6 +4,7 @@ The primary run script for the logic execution.
 from bauhaus.utils import count_solutions, likelihood
 from nnf import config
 from scripts.constraints import *
+from scripts.setup import G
 
 # Setup logic
 config.sat_backend = "kissat" # fast SAT-solver
