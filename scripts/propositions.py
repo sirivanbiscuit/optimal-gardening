@@ -4,7 +4,7 @@ used in the logic execution to represent various elements and features of the
 garden being modelled.
 """
 from bauhaus import proposition, constraint
-from encoding import ENC
+from scripts.encoding import ENC
 
 
 # Everything in this file should be a child of this.

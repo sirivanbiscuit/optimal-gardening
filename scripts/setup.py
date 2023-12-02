@@ -25,7 +25,7 @@ state_select = 0 # Initial state to use (set below)
 init_states = {
     0: [
         ['P', 'C', 'C'],
-        ['C', 'Cf', 'P'],
+        ['C', 'C', 'P'],
         ['C', 'T', 'C'],
     ]
     # ... add more!
@@ -36,8 +36,8 @@ init_states = {
 DO NOT CHANGE THE BELOW LINES.
 All the model exploration may be done with the values above.
 """
-from garden import create_garden
-from propositions import GardenPlot
+from scripts.garden import create_garden
+from scripts.propositions import GardenPlot
 
 if garden_dur < 1:
     raise ValueError("The selected garden duration must be postive")
