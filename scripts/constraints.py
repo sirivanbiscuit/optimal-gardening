@@ -158,8 +158,8 @@ def build_garden_theory() -> Encoding:
                     
                     # Rock makes everything false
                     ENC.add_constraint(
-                        plot.rock >> ~plot.corn & ~plot.beans & ~plot.tomatoes & ~plot.peppers & ~plot.pineTree
-                        & ~plot.helped & ~plot.harmed & plot.alive)
+                        plot.rock >> (~plot.corn & ~plot.beans & ~plot.tomatoes & ~plot.peppers & ~plot.pineTree
+                        & ~plot.helped & ~plot.harmed & plot.alive))
                     
                     # helped or not hurt impl. alive
                     ENC.add_constraint(plot.helped | ~plot.harmed >> plot.alive)
