@@ -20,9 +20,8 @@ def build_init_state():
         for y in range(s):
             id = INIT[x][y] # full char map
             p_id = id.replace('f','') # fence ids ommitted
-            plot_i, plot_u = G[0][x+1][y+1], G['u'][x+1][y+1]
+            plot_i = G[0][x+1][y+1]
             if len(p_id): ENC.add_constraint(plot_i.get_prop(p_id))
-            if 'f' in id: ENC.add_constraint(plot_u)
     
     # All cells (incl. rocks)
     for interval in G:
@@ -33,7 +32,6 @@ def build_init_state():
                     ENC.add_constraint(~plot.get_prop('k'))
                     if plot.x==0 or plot.y==0 or plot.x>s or plot.y>s:
                         ENC.add_constraint(plot.get_prop('R'))
-                        ENC.add_constraint(G['u'][plot.x][plot.y])
             
 
 # All our general constraints go here

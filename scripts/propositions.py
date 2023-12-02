@@ -81,7 +81,6 @@ If a proposition has usage limits, annotate the class @constraint.
 """
 
 # Fenced f(x,y)
-@constraint.at_most_one(ENC)
 @proposition(ENC)
 class Fenced(PropBase):
     """

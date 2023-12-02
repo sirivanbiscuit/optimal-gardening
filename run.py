@@ -1,10 +1,11 @@
 """
 The primary run script for the logic execution.
 """
-from bauhaus.utils import count_solutions, likelihood
+from bauhaus.utils import count_solutions
 from nnf import config
 from scripts.constraints import *
 from scripts.setup import G
+from scripts.encoding import ENC
 
 # Setup logic
 config.sat_backend = "kissat" # fast SAT-solver
@@ -22,3 +23,7 @@ if __name__ == "__main__":
     print(3)
     print("# Solutions: %d" % count_solutions(T))
     print(4)
+    print()
+    print(G)
+    print()
+    print(T.solve())
