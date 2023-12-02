@@ -26,4 +26,10 @@ if __name__ == "__main__":
     print()
     print(G)
     print()
-    print(T.solve())
+    sol = T.solve()
+    trues = []
+    for thing in sol:
+        if sol[thing]: trues.append(str(thing))
+    trues.sort()
+    for t in trues:
+        print(t)
