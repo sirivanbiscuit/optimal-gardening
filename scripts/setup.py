@@ -11,10 +11,10 @@ you need to alter. Gardens are "solved" as follows:
   something is wrong with the program.
 """
 
-garden_len = 3 # Length of the garden
+garden_len = 1 # Length of the garden
 garden_dur = 2 # Number of time intervals
 
-state_select = 0 # Initial state to use (set below)
+state_select = 1 # Initial state to use (set below)
 
 # Make some initial states to use. Keep in mind:
 # - they must be square
