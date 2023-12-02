@@ -180,6 +180,10 @@ def build_garden_theory() -> Encoding:
                 next = G[t+1][x][y]
                 plot = G[t][x][y]
 
+
+                ENC.add_constraint(plot.pineTree >> next.pineTree)
+                ENC.add_constraint(plot.rock >> next.rock)
+
                 #Looks at plant in all directions around, if at least one it becomes that plant (in order of priority)
                 #Corn
                 ENC.add_constraint((plot.corn & plot.alive) >> (next.corn))
