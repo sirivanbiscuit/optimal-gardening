@@ -21,16 +21,15 @@ def create_garden(length: int, duration: int) -> dict:
     total_len = length+2
     
     # universals
-    time_map['u'] = [
-        [Fenced(x,y) for y in range(total_len)] 
-            for x in range(total_len)
-    ]
+    time_map['u'] = []
     
     # gardens in each time interval
     for t in range(duration):
-        time_map[t] = [
-            [GardenPlot(x,y,t) for y in range(total_len)] 
-            for x in range(total_len)
-        ]
+        time_map[t] = []
+        for x in range(total_len):
+            row = []
+            for y in range(total_len):
+                row.append(GardenPlot(x,y,t))
+            time_map[t].append(row)
         
     return time_map

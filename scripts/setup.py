@@ -12,7 +12,7 @@ you need to alter. Gardens are "solved" as follows:
 """
 
 garden_len = 3 # Length of the garden
-garden_dur = 3 # Number of time intervals
+garden_dur = 2 # Number of time intervals
 
 state_select = 0 # Initial state to use (set below)
 
@@ -27,7 +27,11 @@ init_states = {
         ['P', 'C', 'C'],
         ['C', 'C', 'P'],
         ['C', 'T', 'C']
-    ]
+    ],
+    1: [
+        ['PT']
+    ],
+    2: []
     # ... add more!
 }
 
