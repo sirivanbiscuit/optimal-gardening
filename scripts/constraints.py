@@ -132,7 +132,7 @@ def build_garden_theory() -> Encoding:
                                    (plot.peppers & ~left_plot_i.beans & ~right_plot_i.beans) &
                                    (plot.tomatoes & ~above_plot_i.peppers & ~below_plot_i.peppers) &
                                    (plot.beans & ~above_plot_i.corn & ~below_plot_i.corn) &
-                                   ~(right_plot_i.pineTree | left_plot_i.pineTree | above_plot_i.pineTree | below_plot_i.pineTree))
+                                   (~right_plot_i.pineTree & ~left_plot_i.pineTree & ~above_plot_i.pineTree & ~below_plot_i.pineTree))
                                    >> 
                                        ~plot_next.harmed)
         dictloops+=1
@@ -183,7 +183,7 @@ def build_garden_theory() -> Encoding:
                 ENC.add_constraint((plot.corn & ~plot.alive & ~(above.beans | right.beans | left.beans | below.beans) & \
                                     (above.peppers | right.peppers | left.peppers | below.peppers)) >> (next.peppers & next.alive))
                 ENC.add_constraint((plot.corn & ~plot.alive & ~(above.beans | right.beans | left.beans | below.beans) & \
-                                   ~(above.peppers | right.peppers | left.peppers | below.peppers) & \
+                                  (above.peppers | right.peppers | left.peppers | below.peppers) & \
                                     (above.tomatoes | left.tomatoes | right.tomatoes | below.tomatoes)) >> (next.tomatoes & next.alive))
                 ENC.add_constraint((plot.corn & ~plot.alive & ~(above.beans | right.beans | left.beans | below.beans) & \
                                    ~(above.peppers | right.peppers | left.peppers | below.peppers) & \
