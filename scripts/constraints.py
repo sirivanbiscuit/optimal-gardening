@@ -41,59 +41,59 @@ def build_garden_theory() -> Encoding:
     while dictloops < garden_duration-1:
         for x in range(1,garden_size):
             for y in range(1,garden_size):
-                plot = G[dictloops][x][y]
-                # Constrains the plant to the left
-                targ_plot_i = G[dictloops][x-1][y]
-                targ_plot_next = G[dictloops+1][x-1][y]
-                ENC.add_constraint(plot.tomato & targ_plot_i.peppers >> 
-                                   targ_plot_next.helped)
-                ENC.add_constraint(plot.tomato & targ_plot_i.corn >> 
-                                       targ_plot_next.harmed) 
-                ENC.add_constraint(plot.beans & targ_plot_i.corn >> 
-                                       targ_plot_next.helped)
-                ENC.add_constraint(plot.beans & targ_plot_i.peppers >> 
-                                       targ_plot_next.harmed)
-                ENC.add_constraint(plot.pine & ~targ_plot_i.pine >> 
-                                       targ_plot_next.harmed)
-                #Constrains the plant to the left
-                targ_plot_i = G[dictloops][x+1][y]
-                targ_plot_next = G[dictloops+1][x+1][y]
-                ENC.add_constraint(plot.tomato & targ_plot_i.peppers >> 
-                                       targ_plot_next.helped)
-                ENC.add_constraint(plot.tomato & targ_plot_i.corn >> 
-                                       targ_plot_next.helped) 
-                ENC.add_constraint(plot.beans & targ_plot_i.corn >> 
-                                       targ_plot_next.helped)
-                ENC.add_constraint(plot.beans & targ_plot_i.peppers >> 
-                                       targ_plot_next.harmed)
-                ENC.add_constraint(plot.pine & ~targ_plot_i.pine >> 
-                                       targ_plot_next.harmed)
-                #Constrains the plant above
-                targ_plot_i = G[dictloops][x][y-1]
-                targ_plot_next = G[dictloops+1][x][y-1]
-                ENC.add_constraint(plot.corn & targ_plot_i.beans >> 
-                                       targ_plot_next.helped)
-                ENC.add_constraint(plot.corn & targ_plot_i.tomatoes >> 
-                                       targ_plot_next.harmed)
-                ENC.add_constraint(plot.peppers & targ_plot_i.tomatoes >> 
-                                       targ_plot_next.helped)
-                ENC.add_constraint(plot.peppers & targ_plot_i.beans >> 
-                                       targ_plot_next.harmed)
-                ENC.add_constraint(plot.pine & ~targ_plot_i.pine >> 
-                                       targ_plot_next.harmed)
-                # Constrains the plant below
-                targ_plot_i = G[dictloops][x][y+1]
-                targ_plot_next = G[dictloops+1][x][y+1]
-                ENC.add_constraint(plot.corn & targ_plot_i.beans >> 
-                                       targ_plot_next.helped)
-                ENC.add_constraint(plot.corn & targ_plot_i.tomatoes >> 
-                                       targ_plot_next.harmed)
-                ENC.add_constraint(plot.peppers & targ_plot_i.tomatoes >> 
-                                       targ_plot_next.helped)
-                ENC.add_constraint(plot.peppers & targ_plot_i.beans >> 
-                                       targ_plot_next.harmed)
-                ENC.add_constraint(plot.pine & ~targ_plot_i.pine >> 
-                                       targ_plot_next.harmed)
+                    plot = G[dictloops][x][y]
+                    # Constrains the plant to the left
+                    targ_plot_i = G[dictloops][x-1][y]
+                    targ_plot_next = G[dictloops+1][x-1][y]
+                    ENC.add_constraint(plot.tomato & targ_plot_i.peppers >> 
+                                    targ_plot_next.helped)
+                    ENC.add_constraint(plot.tomato & targ_plot_i.corn >> 
+                                        targ_plot_next.harmed) 
+                    ENC.add_constraint(plot.beans & targ_plot_i.corn >> 
+                                        targ_plot_next.helped)
+                    ENC.add_constraint(plot.beans & targ_plot_i.peppers >> 
+                                        targ_plot_next.harmed)
+                    ENC.add_constraint(plot.pine & ~targ_plot_i.pine >> 
+                                        targ_plot_next.harmed)
+                    #Constrains the plant to the left
+                    targ_plot_i = G[dictloops][x+1][y]
+                    targ_plot_next = G[dictloops+1][x+1][y]
+                    ENC.add_constraint(plot.tomato & targ_plot_i.peppers >> 
+                                        targ_plot_next.helped)
+                    ENC.add_constraint(plot.tomato & targ_plot_i.corn >> 
+                                        targ_plot_next.helped) 
+                    ENC.add_constraint(plot.beans & targ_plot_i.corn >> 
+                                        targ_plot_next.helped)
+                    ENC.add_constraint(plot.beans & targ_plot_i.peppers >> 
+                                        targ_plot_next.harmed)
+                    ENC.add_constraint(plot.pine & ~targ_plot_i.pine >> 
+                                        targ_plot_next.harmed)
+                    #Constrains the plant above
+                    targ_plot_i = G[dictloops][x][y-1]
+                    targ_plot_next = G[dictloops+1][x][y-1]
+                    ENC.add_constraint(plot.corn & targ_plot_i.beans >> 
+                                        targ_plot_next.helped)
+                    ENC.add_constraint(plot.corn & targ_plot_i.tomatoes >> 
+                                        targ_plot_next.harmed)
+                    ENC.add_constraint(plot.peppers & targ_plot_i.tomatoes >> 
+                                        targ_plot_next.helped)
+                    ENC.add_constraint(plot.peppers & targ_plot_i.beans >> 
+                                        targ_plot_next.harmed)
+                    ENC.add_constraint(plot.pine & ~targ_plot_i.pine >> 
+                                        targ_plot_next.harmed)
+                    # Constrains the plant below
+                    targ_plot_i = G[dictloops][x][y+1]
+                    targ_plot_next = G[dictloops+1][x][y+1]
+                    ENC.add_constraint(plot.corn & targ_plot_i.beans >> 
+                                        targ_plot_next.helped)
+                    ENC.add_constraint(plot.corn & targ_plot_i.tomatoes >> 
+                                        targ_plot_next.harmed)
+                    ENC.add_constraint(plot.peppers & targ_plot_i.tomatoes >> 
+                                        targ_plot_next.helped)
+                    ENC.add_constraint(plot.peppers & targ_plot_i.beans >> 
+                                        targ_plot_next.harmed)
+                    ENC.add_constraint(plot.pine & ~targ_plot_i.pine >> 
+                                        targ_plot_next.harmed)
         dictloops += 1
     
     # PLANT RELATIONSHIPS; INVERSE IMPLICATIONS SO THERE'S ONLY ONE SOLUTION
