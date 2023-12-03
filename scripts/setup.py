@@ -21,7 +21,6 @@ state_select = 0 # Initial state to use (set below)
 # - the one you use must have the length given above
 # - empty cells should have an empty string
 # - valid plants: 'C', 'B', 'T', 'P', 'PT', ''
-# - put an 'f' after a plant to fence it, ex. 'Tf'
 init_states = {
     0: [
         ['P', 'C', 'C'],
@@ -31,7 +30,12 @@ init_states = {
     1: [
         ['PT']
     ],
-    2: []
+    2: [],
+    3: [
+        ['PT', '', ''],
+        ['', '', ''],
+        ['', '', '']
+    ],
     # ... add more!
 }
 
