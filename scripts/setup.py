@@ -11,7 +11,7 @@ you need to alter. Gardens are "solved" as follows:
   something is wrong with the program.
 """
 
-garden_dur = 3 # Number of time intervals
+garden_dur = 6 # Number of time intervals
 
 state_select = 0 # Initial state to use (set below)
 
@@ -22,8 +22,8 @@ state_select = 0 # Initial state to use (set below)
 # - valid plants: 'C', 'B', 'T', 'P', 'PT', ''
 init_states = {
     0: [
-        ['P', 'PT', 'C'],
-        ['C', 'C', 'P'],
+        ['P', 'C', 'C'],
+        ['C', 'PT', 'P'],
         ['C', 'T', 'C']
     ],
     1: [

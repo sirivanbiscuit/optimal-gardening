@@ -22,7 +22,7 @@ def solution_out(sol: dict):
     if len(sys.argv)>1: 
         if sys.argv[1]=="-grid":
             deconstr = {}
-            pd = GardenPlot.PLANT_D.copy()
+            pd = GardenPlot.PLANT_VIS.copy()
             for t in trues:
                 if t[-1]==")":
                     if t[1]!=curr:
@@ -31,18 +31,23 @@ def solution_out(sol: dict):
                             ['' for _ in range(len(INIT)+2)] 
                             for _ in range(len(INIT)+2)
                             ]
-                    else:
-                        r,c = int(t[-5]),int(t[-2])
-                        for p_id in pd:
-                            if pd[p_id] in t: 
-                                deconstr[curr][r][c] = p_id
-                                break
+                    r,c = int(t[-5]),int(t[-2])
+                    for p_id in pd:
+                        if pd[p_id] in t: 
+                            deconstr[curr][r][c] = p_id
+                            break
             for key in deconstr:
                 print(f"\n{key}:")
                 for row in deconstr[key]:
-                    print(f"\t{row}")     
+                    print_row = ''
+                    for p in row: print_row+=p+' '
+                    print(f"\t{print_row}")   
+            print()  
             return
-            
+    
+    print("- shows all propositions that are true")
+    print("- if a proposition isn't here, it's false")
+    print("- all coords are form (row, col)")
     for t in trues:
         if "Rock" not in t: 
             if t[1]!=curr: 
@@ -67,7 +72,4 @@ if __name__ == "__main__":
     print("Collecting model data...")
     sol = T.solve()
     print("\nMODEL DATA:")
-    print("- shows all propositions that are true")
-    print("- if a proposition isn't here, it's false")
-    print("- all coords are form (row, col)")
     solution_out(sol)
