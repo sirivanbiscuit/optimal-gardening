@@ -11,8 +11,7 @@ you need to alter. Gardens are "solved" as follows:
   something is wrong with the program.
 """
 
-garden_len = 3 # Length of the garden
-garden_dur = 2 # Number of time intervals
+garden_dur = 3 # Number of time intervals
 
 state_select = 0 # Initial state to use (set below)
 
@@ -23,7 +22,7 @@ state_select = 0 # Initial state to use (set below)
 # - valid plants: 'C', 'B', 'T', 'P', 'PT', ''
 init_states = {
     0: [
-        ['P', 'C', 'C'],
+        ['P', 'PT', 'C'],
         ['C', 'C', 'P'],
         ['C', 'T', 'C']
     ],
@@ -54,18 +53,21 @@ if state_select not in init_states:
     raise ValueError("The selected initial config doesn't exist")
 
 valid = GardenPlot.PLANTS + GardenPlot.PLANTS_F
-char_map, valid_map, row_l = init_states[state_select], True, 0
-for row in char_map:
-    row_l += 1
-    if len(row)!=garden_len: valid_map = False
+inits = init_states[state_select]
+for row in inits:
     for char in row:
-        if char not in valid: valid_map = False
-if row_l!=garden_len: valid_map = False
+        if char not in valid:
+            raise ValueError("The selected initial config has invalid plants")
 
-if not valid_map:
-    raise ValueError("The selected initial config is invalid")
-    
+if not len(inits): 
+    raise ValueError("The selected initial config must have non-zero area")
+
+prev_l = len(inits[0])
+for row in inits[1:]:
+    if len(row)!=prev_l: 
+        raise ValueError("The selected initial config must be a square")
+    prev_l = len(row)
     
 # Import these to various files where needed
-G = create_garden(garden_len, garden_dur)
-INIT = init_states[state_select]
+G = create_garden(len(inits), garden_dur)
+INIT = inits

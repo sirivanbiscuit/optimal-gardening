@@ -157,6 +157,11 @@ class GardenPlot():
     PLANTS = ['C', 'B', 'T', 'P', 'PT', 'R', '']
     PLANTS_F = ['Cf', 'Bf', 'Tf', 'Pf', 'PTf', 'Rf', 'f']
     
+    PLANT_D = {
+        "C": "Corn", "B": "Beans", "T": "Tomatoes", "P": "Peppers",
+        "PT": "Pine Tree", "R": "Rock", "": "Empty"
+    }
+    
     def get_prop(self, id:str):
         """
         Returns a certain proposition of this cell based off the
