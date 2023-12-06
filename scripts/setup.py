@@ -11,9 +11,9 @@ you need to alter. Gardens are "solved" as follows:
   something is wrong with the program.
 """
 
-garden_dur = 6 # Number of time intervals
+garden_dur = 5 # Number of time intervals
 
-state_select = 0 # Initial state to use (set below)
+state_select = 1 # Initial state to use (set below)
 
 # Make some initial states to use. Keep in mind:
 # - they must be square
@@ -22,18 +22,18 @@ state_select = 0 # Initial state to use (set below)
 # - valid plants: 'C', 'B', 'T', 'P', 'PT', ''
 init_states = {
     0: [
-        ['P', 'C', 'C'],
-        ['C', 'PT', 'P'],
-        ['C', 'T', 'C']
-    ],
-    1: [
         ['PT']
     ],
-    2: [],
-    3: [
-        ['PT', '', ''],
+    1: [
+        ['PT', '', 'PT'],
         ['', '', ''],
-        ['', '', '']
+        ['PT', '', 'PT']
+    ],
+    2: [
+      ['P', 'C', 'T', 'B'], 
+      ['P', 'R', 'T', 'B'], 
+      ['B', 'C', 'C', 'T'], 
+      ['C', 'C', 'P', 'P']
     ],
     # ... add more!
 }
@@ -46,8 +46,11 @@ All the model exploration may be done with the values above.
 from scripts.garden import create_garden
 from scripts.propositions import GardenPlot
 
-if garden_dur < 1:
-    raise ValueError("The selected garden duration must be postive")
+if garden_dur < 2:
+    raise ValueError("The selected garden duration must more than one")
+
+elif garden_dur > 99:
+    raise ValueError("The selected garden duration must be less than one hundred")
 
 if state_select not in init_states: 
     raise ValueError("The selected initial config doesn't exist")
@@ -63,10 +66,12 @@ if not len(inits):
     raise ValueError("The selected initial config must have non-zero area")
 
 prev_l = len(inits[0])
+ind = 1
 for row in inits[1:]:
-    if len(row)!=prev_l: 
+    if len(row)!=prev_l or ind==prev_l:
         raise ValueError("The selected initial config must be a square")
     prev_l = len(row)
+    ind+=1
     
 # Import these to various files where needed
 G = create_garden(len(inits), garden_dur)
