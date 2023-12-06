@@ -1,4 +1,4 @@
-from scripts.propositions import GardenPlot, Fenced
+from scripts.propositions import GardenPlot
 
 def create_garden(length: int, duration: int) -> dict:
     """
@@ -21,7 +21,7 @@ def create_garden(length: int, duration: int) -> dict:
     total_len = length+2
     
     # universals
-    time_map['u'] = []
+    time_map['u'] = [] # this is unused, but kept to keep the code working
     
     # gardens in each time interval
     for t in range(duration):
