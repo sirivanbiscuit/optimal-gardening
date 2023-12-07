@@ -2,6 +2,7 @@
 This is the repository for Group 2's modelling project. This project aims to be a
 rudimentary gardening simulator which uses logical constraints and models to 
 display a virtual garden across multiple time intervals. 
+* Note: the most up-to-date version of this project is in `main`. Make sure you are there.
 
 ### How to Build a Garden
 * `setup.py` contains a handful of initialization code to help the user set up a garden.
