@@ -11,30 +11,61 @@ you need to alter. Gardens are "solved" as follows:
   something is wrong with the program.
 """
 
-garden_dur = 5 # Number of time intervals
+# SET NUMBER OF TIME INTERVALS:
+# If this is higher than 10, except much longer solve-time.
+# Your average garden should be around 3x3 with several intervals.
+# Typically a garden doesn't do anything interesting after about
+# 5 or so intervals.
+garden_dur = 4
 
-state_select = 1 # Initial state to use (set below)
+# Initial state to use (from below)
+state_select = 2
 
+# INITIAL STATES
 # Make some initial states to use. Keep in mind:
 # - they must be square
 # - the one you use must have the length given above
 # - empty cells should have an empty string
-# - valid plants: 'C', 'B', 'T', 'P', 'PT', ''
+# - valid objects: 'C', 'B', 'T', 'P', 'PT', 'R', ''
 init_states = {
+    # 0: An empty 2x2 garden. This will have one solution for
+    # every possible garden configuration: 
+    # (6 objects ^ 4 cells) = 1296 solutions
+    # If you select select optimal gardening, there will be one
+    # solution for every possible 2x2 OPTIMAL garden (372)
     0: [
-        ['PT']
+        ['',''],
+        ['','']
     ],
+    # 1: A randomly arranged garden. This can be used as a basic
+    # test of the model's capabilities with regard to both
+    # plant spreading and relationships. (1 sol, 0 optimal sols)
     1: [
-        ['PT', '', 'PT'],
-        ['', '', ''],
-        ['PT', '', 'PT']
+        ['T', 'B', 'PT'],
+        ['C', 'C', 'P'],
+        ['T', 'P', 'PT']
     ],
+    # 2: A garden with pine trees lining the left and right edges.
+    # This will have countless non-optimal solutions (don't try to find
+    # them, it will take ages), however, due to the placement of trees,
+    # there will be a much smaller number of optimal ones, each with a 
+    # check-like pattern.
     2: [
-      ['P', 'C', 'T', 'B'], 
-      ['P', 'R', 'T', 'B'], 
-      ['B', 'C', 'C', 'T'], 
-      ['C', 'C', 'P', 'P']
+        ['PT', '', '', 'PT'], 
+        ['PT', '', '', 'PT'], 
+        ['PT', '', '', 'PT'], 
+        ['PT', '', '', 'PT']
     ],
+    # 3: A garden with a particularily problematic setup of pine
+    # trees. There will be no optimal gardens here, since there is
+    # no possible method of keeping the right edge alive while also
+    # helping any plant elsewhere.
+    3: [
+        ['PT', 'B', 'C', ''], 
+        ['P', 'C', 'PT', ''], 
+        ['T', 'C', 'PT', ''], 
+        ['PT', 'T', 'C', '']
+    ]
     # ... add more!
 }
 

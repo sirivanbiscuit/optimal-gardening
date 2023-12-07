@@ -59,7 +59,7 @@ def solution_out(sol:dict, grid:bool):
 if __name__ == "__main__":
     grid = input("Show grid? (y/n) ")=='y'
     opt = input("Find optimal gardens? (y/n) ")=='y'
-    opt_f = input("Immeadiate optimization? (y/n) ")=='y' if opt else False
+    opt_f = input("Immediate optimization? (y/n) ")=='y' if opt else False
     print("\nBuilding garden theory...")
     T = build_garden_theory(opt, opt_f)
     print("Compiling...")
