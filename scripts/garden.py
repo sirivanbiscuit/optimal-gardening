@@ -18,10 +18,13 @@ def create_garden(length: int, duration: int) -> dict:
         duration (int): the number of time intervals.
     """
     time_map = {}
-    total_len = length+2
+    total_len = length+2 # add 2 for the rock border
     
     # universals
-    time_map['u'] = [] # this is unused, but kept to keep the code working
+    # - this is unused, but kept to keep the code working
+    # - originally it was for fences, which were removed, as rocks
+    #   do the same things as fenced plants
+    time_map['u'] = [] 
     
     # gardens in each time interval
     for t in range(duration):
