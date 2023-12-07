@@ -80,20 +80,6 @@ Keep note that certain ones of these aren't time-based (i.e. fencing).
 If a proposition has usage limits, annotate the class @constraint.
 """
 
-# Fenced f(x,y)
-@proposition(ENC)
-class Fenced(PropBase):
-    """
-    Represents the proposition f(x,y) that is whether or not
-    there is a fence around the cell at position (x,y).
-    """
-    def __init__(self, x, y):
-        self.x, self.y = x, y
-
-    def __str__(self) -> str:
-        return f"{(self.x, self.y)} has fence"
-
-
 # Helped h(x,y,t)
 @proposition(ENC)
 class Helped(PropBase):
@@ -159,7 +145,7 @@ class GardenPlot():
     
     PLANT_VIS = {
         "C": "Corn", "B": "Beans", "T": "Tomatoes", "P": "Peppers",
-        "%": "Pine Tree", "■": "Rock"
+        "%": "PineTree", "■": "Rock"
     }
     
     def get_prop(self, id:str):
