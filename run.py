@@ -10,7 +10,13 @@ from scripts.propositions import GardenPlot
 # Setup logic
 config.sat_backend = "kissat" # fast SAT-solver
 
-# Output func
+# Outputs the solution into something more readable.
+# - If grid is set to True, it will print a coloured grid
+#   showing the various plants at the positions over time.
+# - Otherwise, it will simply make a list of all propositions
+#   set to T in the model, excluding rocks.
+# This isn't commented well, since it has nothing to do with
+# the actual logic funtions. It is just a visualizer tool.
 def solution_out(sol:dict, grid:bool):
     trues = {}
     for true in sol:
@@ -55,11 +61,21 @@ def solution_out(sol:dict, grid:bool):
     print('\n')
 
 
-# Run script
+# RUN SCRIPT
 if __name__ == "__main__":
+    # Asks the user if they want a grid output or a list output
     grid = input("Show grid? (y/n) ")=='y'
+    # Optimal garden seeks solutions that reach some state in
+    # which all plants will remain alive forever
     opt = input("Find optimal gardens? (y/n) ")=='y'
+    # IMMEDIATE optimal gardens have all plants live forever right
+    # from the beginning. That is, t0=t1=t2... and so on.
     opt_f = input("Immediate optimization? (y/n) ")=='y' if opt else False
+    # The below code prints a status report followed by
+    # the user's desired output. This may make from seconds to
+    # minutes depending on how "empty" the user makes their initial 
+    # state in setup.py (since there is one solution for every 
+    # POSSIBLE garden within the bounds of the initial state).
     print("\nBuilding garden theory...")
     T = build_garden_theory(opt, opt_f)
     print("Compiling...")
@@ -71,10 +87,14 @@ if __name__ == "__main__":
     print(f"Solutions: {solution_count}\n")
     adj = "fully " if opt_f else ""
     if opt: print(f"You can grow {solution_count} {adj}optimal gardens from the given configuration.\n")
+    # If at least one solution is found, print out one
     if satisfied:
         sol = T.solve()
         print("\nMODEL DATA:")
         solution_out(sol, grid)
+        # The user may look at other solutions to an initial state without
+        # having to re-run the entire progam. This shouldn't take long as 
+        # the theory has already been compiled above:
         if solution_count>1:
             while input("There is more than one solution to this garden. Find another? (y/n) ")=='y':
                 new_sol = sol
@@ -82,6 +102,9 @@ if __name__ == "__main__":
                 while sol==new_sol: new_sol = T.solve()
                 print("\nMODEL DATA:")
                 solution_out(new_sol, grid)
-        print("\n")        
+        print("\n")     
+    # This will only show up if the user tries to find an "optimal garden"
+    # within a configuration that can't have any. If the user only wants to
+    # look at a completed garden's evolution over time, there will be 1 solution.   
     else:
         print("(no solutions to display)\n\n")

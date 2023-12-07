@@ -12,7 +12,7 @@ you need to alter. Gardens are "solved" as follows:
 """
 
 # SET NUMBER OF TIME INTERVALS:
-# If this is higher than 10, except much longer solve-time.
+# If this is higher than 10, expect much longer solve-time.
 # Your average garden should be around 3x3 with several intervals.
 # Typically a garden doesn't do anything interesting after about
 # 5 or so intervals.

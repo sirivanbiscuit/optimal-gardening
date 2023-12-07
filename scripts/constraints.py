@@ -20,8 +20,10 @@ def build_init_state():
         for y in range(s):
             id = INIT[x][y] # full char map
             plot_i = G[0][x+1][y+1]
+            # all cells at t0 are alive, and not harmed/hurt
             ENC.add_constraint(~plot_i.get_prop('h'))
             ENC.add_constraint(~plot_i.get_prop('k'))
+            # if INIT has a char at (x,y), plant a plant there:
             if len(id): ENC.add_constraint(plot_i.get_prop(id))
     # All cells (incl. rocks)
     for interval in G:
@@ -29,6 +31,7 @@ def build_init_state():
             for row in G[interval]:
                 for plot in row:
                     if plot.x==0 or plot.y==0 or plot.x>s or plot.y>s:
+                        # Border cells get Rocks regardless of INIT:
                         ENC.add_constraint(plot.get_prop('R'))
             
 
@@ -40,17 +43,21 @@ def build_garden_theory(optimize:bool, opt_full:bool) -> Encoding:
     for t in range(len(G)-2):
         for x in range(1,len(G[t])-1):
             for y in range(1,len(G[t][x])-1):
+                # Get the current "targeted" plant cell
+                # We will add possible plant relationships to this particular cell.
                 plot = G[t][x][y]
                 # Constrains the plant to the left
-                targ_plot_i = G[t][x][y-1]
-                targ_plot_next = G[t+1][x][y-1]
+                # See the wiki doc for plant relationships. 
+                targ_plot_i = G[t][x][y-1] # cell to the left of target
+                targ_plot_next = G[t+1][x][y-1] # cell to the left, but in the future interval
                 ENC.add_constraint((plot.tomatoes & targ_plot_i.peppers & targ_plot_i.alive) >> targ_plot_next.helped)
                 ENC.add_constraint((plot.tomatoes & targ_plot_i.corn & targ_plot_i.alive) >> targ_plot_next.harmed) 
                 ENC.add_constraint((plot.beans & targ_plot_i.corn & targ_plot_i.alive) >> targ_plot_next.helped)
                 ENC.add_constraint((plot.beans & targ_plot_i.peppers & targ_plot_i.alive) >> targ_plot_next.harmed)
                 ENC.add_constraint((plot.pineTree & ~targ_plot_i.pineTree 
                                     & ~targ_plot_i.rock & targ_plot_i.alive) >> targ_plot_next.harmed)
-                #Constrains the plant to the right
+                # Constrains the plant to the right
+                # Same structure as above, but with different relationsips
                 targ_plot_i = G[t][x][y+1]
                 targ_plot_next = G[t+1][x][y+1]
                 ENC.add_constraint((plot.tomatoes & targ_plot_i.peppers & targ_plot_i.alive) >> targ_plot_next.helped)
@@ -59,7 +66,8 @@ def build_garden_theory(optimize:bool, opt_full:bool) -> Encoding:
                 ENC.add_constraint((plot.beans & targ_plot_i.peppers & targ_plot_i.alive) >> targ_plot_next.harmed)
                 ENC.add_constraint((plot.pineTree & ~targ_plot_i.pineTree 
                                     & ~targ_plot_i.rock & targ_plot_i.alive) >> targ_plot_next.harmed)
-                #Constrains the plant above
+                # Constrains the plant above
+                # Same structure as above, but with different relationsips
                 targ_plot_i = G[t][x-1][y]
                 targ_plot_next = G[t+1][x-1][y]
                 ENC.add_constraint((plot.corn & targ_plot_i.beans & targ_plot_i.alive) >> targ_plot_next.helped)
@@ -69,6 +77,7 @@ def build_garden_theory(optimize:bool, opt_full:bool) -> Encoding:
                 ENC.add_constraint((plot.pineTree & ~targ_plot_i.pineTree 
                                     & ~targ_plot_i.rock & targ_plot_i.alive) >> targ_plot_next.harmed)
                 # Constrains the plant below
+                # Same structure as above, but with different relationsips
                 targ_plot_i = G[t][x+1][y]
                 targ_plot_next = G[t+1][x+1][y]
                 ENC.add_constraint((plot.corn & targ_plot_i.beans & targ_plot_i.alive) >> targ_plot_next.helped)
@@ -84,6 +93,7 @@ def build_garden_theory(optimize:bool, opt_full:bool) -> Encoding:
     for t in range(len(G)-2):
         for x in range(1,len(G[t])-1):
             for y in range(1,len(G[t][x])-1):
+                # Get cells in various directions
                 plot = G[t][x][y]
                 above_plot_i = G[t][x-1][y]
                 below_plot_i = G[t][x+1][y]
@@ -123,15 +133,15 @@ def build_garden_theory(optimize:bool, opt_full:bool) -> Encoding:
                         plot.peppers >> (~plot.corn & ~plot.beans & ~plot.tomatoes & ~plot.pineTree & ~plot.rock))
                     ENC.add_constraint(
                         plot.pineTree >> (~plot.corn & ~plot.beans & ~plot.tomatoes & ~plot.peppers & ~plot.rock))  
-                    # Rock settings
+                    # Rock defaults
                     ENC.add_constraint(
                         plot.rock >> (~plot.corn & ~plot.beans & ~plot.tomatoes & ~plot.peppers & ~plot.pineTree
                         & ~plot.helped & ~plot.harmed & ~plot.alive))
-                    # Pine tree settings
+                    # Pine tree defaults
                     ENC.add_constraint(plot.pineTree >> (~plot.helped & ~plot.harmed & plot.alive))
                     # Cells must have plants
                     ENC.add_constraint(plot.corn | plot.beans | plot.tomatoes | plot.peppers | plot.rock | plot.pineTree)
-                    # helped or not hurt impl. alive
+                    # helped or not hurt IF AND ONLY IF alive (and vice versa)
                     ENC.add_constraint(((plot.helped | ~plot.harmed) & ~plot.rock) >> plot.alive)
                     ENC.add_constraint(plot.alive >> ((plot.helped | ~plot.harmed) & ~plot.rock))
     
@@ -139,19 +149,25 @@ def build_garden_theory(optimize:bool, opt_full:bool) -> Encoding:
     for t in range(len(G)-2):
         for x in range(1,len(G[t])-1):
             for y in range(1,len(G[t][x])-1):
-                # directions
+                # Directions
                 above = G[t][x-1][y]
                 below = G[t][x+1][y]
                 left = G[t][x][y-1]
                 right = G[t][x][y+1]
                 next = G[t+1][x][y]
                 plot = G[t][x][y]
-                # trees and rocks cannot be altered
+                # Trees and rocks cannot be altered
                 ENC.add_constraint(plot.pineTree >> next.pineTree)
                 ENC.add_constraint(plot.rock >> next.rock)
-                # Looks at plant in all directions around, if at least one it becomes that plant (in order of priority)
-                # Corn
+                # Plants that are alive on a given time interval can't get overrun:
                 ENC.add_constraint((plot.corn & plot.alive) >> (next.corn))
+                ENC.add_constraint((plot.beans & plot.alive) >> (next.beans))
+                ENC.add_constraint((plot.peppers & plot.alive) >> (next.peppers))
+                ENC.add_constraint((plot.tomatoes & plot.alive) >> (next.tomatoes))
+                # Looks at plant in all directions around, if at least one it becomes that plant (in order of priority)
+                # Corn: Likes Beans, Indifferent to Peppers, Hates Tomato
+                # Thus, priority goes Beans>Peppers>Tomatoes
+                # If nothing can override, then keep the plant itself, and dead.
                 ENC.add_constraint((plot.corn & ~plot.alive & (above.beans | right.beans | left.beans | below.beans))
                                    >> (next.beans & ~next.helped & ~next.harmed))
                 ENC.add_constraint((plot.corn & ~plot.alive & (~above.beans & ~right.beans & ~left.beans & ~below.beans) &
@@ -165,8 +181,7 @@ def build_garden_theory(optimize:bool, opt_full:bool) -> Encoding:
                                    (~above.peppers & ~right.peppers & ~left.peppers & ~below.peppers) &
                                     (~above.tomatoes & ~left.tomatoes & ~right.tomatoes & ~below.tomatoes)) 
                                    >> (next.corn & ~next.alive))
-                # Beans
-                ENC.add_constraint((plot.beans & plot.alive) >> (next.beans))
+                # Beans: Likes Corn, Indifferent to Tomato, Hates Peppers
                 ENC.add_constraint((plot.beans & ~plot.alive & (above.corn | right.corn | left.corn | below.corn)) 
                                    >> (next.corn & ~next.helped & ~next.harmed))
                 ENC.add_constraint((plot.beans & ~plot.alive & (~above.corn & ~right.corn & ~left.corn & ~below.corn) &
@@ -180,8 +195,7 @@ def build_garden_theory(optimize:bool, opt_full:bool) -> Encoding:
                                    (~above.tomatoes & ~left.tomatoes & ~right.tomatoes & ~below.tomatoes) &
                                     (~above.peppers & ~right.peppers & ~left.peppers & ~below.peppers)) 
                                    >> (next.beans & ~next.alive))
-                # Peppers
-                ENC.add_constraint((plot.peppers & plot.alive) >> (next.peppers))
+                # Peppers: Likes Tomato, Indifferent to Corn, Hates Beans
                 ENC.add_constraint((plot.peppers & ~plot.alive & (above.tomatoes | left.tomatoes | right.tomatoes | below.tomatoes)) 
                                    >> (next.tomatoes & ~next.helped & ~next.harmed))
                 ENC.add_constraint((plot.peppers & ~plot.alive & (~above.tomatoes & ~left.tomatoes & ~right.tomatoes & ~below.tomatoes) &
@@ -195,8 +209,7 @@ def build_garden_theory(optimize:bool, opt_full:bool) -> Encoding:
                                     (~above.corn & ~right.corn & ~left.corn & ~below.corn) &
                                     (~above.beans & ~right.beans & ~left.beans & ~below.beans)) 
                                    >> (next.peppers & ~next.alive))
-                # Tomatoes
-                ENC.add_constraint((plot.tomatoes & plot.alive) >> (next.tomatoes))
+                # Tomatoes: Likes Peppers, Indifferent to Beans, Hates Corn
                 ENC.add_constraint((plot.tomatoes & ~plot.alive & (above.peppers | left.peppers | right.peppers | below.peppers)) 
                                    >> (next.peppers & ~next.helped & ~next.harmed))
                 ENC.add_constraint((plot.tomatoes & ~plot.alive & (~above.peppers & ~right.peppers & ~left.peppers & ~below.peppers) &
@@ -213,6 +226,12 @@ def build_garden_theory(optimize:bool, opt_full:bool) -> Encoding:
     
     # OPTIMIZATION (optional)
     if optimize:
+        # Immediate optimization (opt_full) means all intervals are the same.
+        # - Seeing that t0=t1 would be the simplest, so we will assert that.
+        # Non-immediate optimizations means it reaches a point that is
+        # optimized. We can only be assured this if the LAST two intervals are
+        # the same. Since t(n) >> t(n+1), all future ones are the same too.
+        # - Sees that the last two intervals are equal and alive.
         last = len(G)-2 if not opt_full else 1
         sec_last = last-1 if not opt_full else 0
         full_interv = []
@@ -223,8 +242,8 @@ def build_garden_theory(optimize:bool, opt_full:bool) -> Encoding:
                 full_interv.append((plot_sl.alive & plot_last.alive) | plot_sl.rock)
         ENC.add_constraint(And(full_interv))
                    
-    # get initial state
+    # Get initial state
     build_init_state()
 
-    # return
+    # Return theory
     return ENC
