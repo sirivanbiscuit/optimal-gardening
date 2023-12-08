@@ -16,10 +16,10 @@ you need to alter. Gardens are "solved" as follows:
 # Your average garden should be around 3x3 with several intervals.
 # Typically a garden doesn't do anything interesting after about
 # 5 or so intervals.
-garden_dur = 4
+garden_dur = 6
 
 # Initial state to use (from below)
-state_select = 2
+state_select = 5
 
 # INITIAL STATES
 # Make some initial states to use. Keep in mind:
@@ -65,7 +65,24 @@ init_states = {
         ['P', 'C', 'PT', ''], 
         ['T', 'C', 'PT', ''], 
         ['PT', 'T', 'C', '']
-    ]
+    ],
+    # 4: A garden that has a large variety of both immeadiate and
+    # non-immeadiate optimization. If you solve for either optimal
+    # setting, you will get different values. There will be a much
+    # larger number of non-immediate solutions.
+    4: [
+        ['PT', '', 'P', ''], 
+        ['PT', '', 'T', ''], 
+        ['PT', '', 'B', ''], 
+        ['PT', '', 'C', '']
+    ],
+    # 5: A garden that has no immediately optimal solutions, but
+    # DOES have a typically optimal one after several time intervals:
+    5: [
+        ['PT', 'T', 'B'],
+        ['PT', 'T', 'C'],
+        ['R', 'T', 'R']
+    ],
     # ... add more!
 }
 
